@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HeaderComponent } from './header.component';
 
-describe('HeaderComponent', () => {
-  let component: HeaderComponent;
-  let fixture: ComponentFixture<HeaderComponent>;
+import { FinalWordComponent } from './final-word.component';
+
+describe('FinalWordComponent', () => {
+  let component: FinalWordComponent;
+  let fixture: ComponentFixture<FinalWordComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ]
+      declarations: [ FinalWordComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HeaderComponent);
+    fixture = TestBed.createComponent(FinalWordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
