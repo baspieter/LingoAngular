@@ -20,5 +20,9 @@ export class FinalWordService {
   getFinalWords(): Observable<FinalWord[]> {
     return this.http.get<FinalWord[]>(this.apiUrl);
   }
+
+  addFinalWord(word: FinalWord): Observable<FinalWord> {
+    return this.http.post<FinalWord>(this.apiUrl, word, httpOptions);
+  }
 }
 

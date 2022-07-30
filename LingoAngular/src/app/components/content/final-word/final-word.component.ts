@@ -15,4 +15,8 @@ export class FinalWordComponent implements OnInit {
   ngOnInit(): void {
     this.finalWordService.getFinalWords().subscribe(finalWords => this.finalWords = finalWords);
   }
+
+  addFinalWord(finalWord: FinalWord) {
+    this.finalWordService.addFinalWord(finalWord).subscribe((finalWord) => this.finalWords.push(finalWord));
+  }
 }

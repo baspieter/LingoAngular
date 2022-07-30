@@ -1,5 +1,4 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { Word } from '../../../Word';
 
 @Component({
@@ -9,38 +8,23 @@ import { Word } from '../../../Word';
 })
 export class AddWordComponent implements OnInit {
   @Output() onAddWord: EventEmitter<Word> = new EventEmitter();
-  name: string;
-  subscription: Subscription;
+  name: string | undefined;
 
-  constructor() {
-    this.subscription = this.uiService
-      .onToggle()
-      .subscribe((value) => (this.showAddTask = value));
-  }
+  constructor() {}
 
   ngOnInit(): void {}
-  
-   ngOnDestroy() {
-        // Unsubscribe to ensure no memory leaks
-        this.subscription.unsubscribe();
-    }
 
   onSubmit() {
-    if (!this.text) {
-      alert('Please add a task!');
+    if(!this.name) {
+      alert('Please add a name')
       return;
     }
 
-    const newTask: Task = {
-      text: this.text,
-      day: this.day,
-      reminder: this.reminder,
-    };
+    const newWord = { name: this.name }
 
-    this.onAddTask.emit(newTask);
+    this.onAddWord.emit(newWord)    
 
-    this.text = '';
-    this.day = '';
-    this.reminder = false;
+    this.name = '';
   }
+
 }

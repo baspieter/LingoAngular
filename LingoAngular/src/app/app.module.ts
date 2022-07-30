@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
+import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ContentComponent } from './components/content/content.component';
@@ -11,6 +12,7 @@ import { GameListComponent } from './components/game-list/game-list.component';
 import { WordComponent } from './components/content/word/word.component';
 import { FinalWordComponent } from './components/content/final-word/final-word.component';
 import { AddWordComponent } from './components/content/add-word/add-word.component';
+import { AddFinalWordComponent } from './components/content/add-final-word/add-final-word.component';
 
 @NgModule({
   declarations: [
@@ -21,12 +23,14 @@ import { AddWordComponent } from './components/content/add-word/add-word.compone
     GameListComponent,
     WordComponent,
     FinalWordComponent,
-    AddWordComponent
+    AddWordComponent,
+    AddFinalWordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

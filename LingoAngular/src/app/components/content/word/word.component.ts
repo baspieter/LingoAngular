@@ -15,5 +15,9 @@ export class WordComponent implements OnInit {
   ngOnInit(): void {
     this.wordService.getWords().subscribe(words => this.words = words);
   }
+
+  addWord(word: Word) {
+    this.wordService.addWord(word).subscribe((word) => this.words.push(word));
+  }
 }
 
