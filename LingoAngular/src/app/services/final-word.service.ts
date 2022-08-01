@@ -24,5 +24,10 @@ export class FinalWordService {
   addFinalWord(word: FinalWord): Observable<FinalWord> {
     return this.http.post<FinalWord>(this.apiUrl, word, httpOptions);
   }
+
+  deleteFinalWord(finalWord: FinalWord): Observable<FinalWord> {
+    const url = `${this.apiUrl}/${finalWord.id}`;
+    return this.http.delete<FinalWord>(url);
+  }
 }
 

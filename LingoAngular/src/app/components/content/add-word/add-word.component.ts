@@ -20,6 +20,11 @@ export class AddWordComponent implements OnInit {
       return;
     }
 
+    if(this.name?.length != 6) {
+      alert('Name should be 6 characters.')
+      return;
+    }
+
     const newWord = { name: this.name }
 
     this.onAddWord.emit(newWord)    

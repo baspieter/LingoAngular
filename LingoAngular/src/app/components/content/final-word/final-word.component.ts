@@ -19,4 +19,14 @@ export class FinalWordComponent implements OnInit {
   addFinalWord(finalWord: FinalWord) {
     this.finalWordService.addFinalWord(finalWord).subscribe((finalWord) => this.finalWords.push(finalWord));
   }
+
+  removeFinalWord(finalWord: FinalWord) {
+    if(confirm("Are you sure?")) {
+      this.finalWordService
+      .deleteFinalWord(finalWord)
+      .subscribe(
+        () => (this.finalWords = this.finalWords.filter((t) => t.id !== finalWord.id))
+      );
+    }
+  }
 }

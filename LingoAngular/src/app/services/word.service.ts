@@ -24,5 +24,10 @@ export class WordService {
   addWord(word: Word): Observable<Word> {
     return this.http.post<Word>(this.apiUrl, word, httpOptions);
   }
+
+  deleteWord(word: Word): Observable<Word> {
+    const url = `${this.apiUrl}/${word.id}`;
+    return this.http.delete<Word>(url);
+  }
 }
 

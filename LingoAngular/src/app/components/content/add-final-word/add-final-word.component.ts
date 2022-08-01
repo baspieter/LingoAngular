@@ -21,6 +21,11 @@ export class AddFinalWordComponent implements OnInit {
       return;
     }
 
+    if(this.name?.length < 10) {
+      alert('Final name should be atleast 10 characters')
+      return;
+    }
+
     const newFinalWord = { name: this.name }
 
     this.onAddFinalWord.emit(newFinalWord)    

@@ -19,5 +19,15 @@ export class WordComponent implements OnInit {
   addWord(word: Word) {
     this.wordService.addWord(word).subscribe((word) => this.words.push(word));
   }
+
+  removeWord(word: Word) {
+    if(confirm("Are you sure?")) {
+      this.wordService
+        .deleteWord(word)
+        .subscribe(
+          () => (this.words = this.words.filter((t) => t.id !== word.id))
+        );
+    }
+  }
 }
 
