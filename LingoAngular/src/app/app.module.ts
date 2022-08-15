@@ -13,6 +13,7 @@ import { WordComponent } from './components/content/word/word.component';
 import { FinalWordComponent } from './components/content/final-word/final-word.component';
 import { AddWordComponent } from './components/content/add-word/add-word.component';
 import { AddFinalWordComponent } from './components/content/add-final-word/add-final-word.component';
+import { FinalWordFormComponent } from './components/game/final-word-form/final-word-form.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AddFinalWordComponent } from './components/content/add-final-word/add-f
     WordComponent,
     FinalWordComponent,
     AddWordComponent,
-    AddFinalWordComponent
+    AddFinalWordComponent,
+    FinalWordFormComponent
   ],
   imports: [
     BrowserModule,
