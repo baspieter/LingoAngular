@@ -1,1 +1,16 @@
-<app-final-word-form [gameObservable]="gameObservable"></app-final-word-form>
+<div class="grid grid-cols-3 gap-x-12 mx-auto">
+  <div *ngIf="dataLoaded | async; then thenBlock else elseBlock"></div>
+  <ng-template #thenBlock>
+    <app-final-word-form [game]="game" [finalWord]="finalWord"></app-final-word-form>
+  </ng-template>
+  <ng-template class="lds-ring" #elseBlock>
+    <div class="loading-spinner-container">
+      <div class="loading-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </ng-template>
+</div>

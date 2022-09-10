@@ -1,4 +1,23 @@
-<p>{{finalWordProgress}}</p>
+<div class="flex items-center">
+  <div *ngFor="let item of finalWordProgress">
+    <div class="border rounded bg-white px-4 py-2">
+      {{item}}
+    </div>
+  </div>
+</div>
 
-
-<!-- <div *ngIf="condition">Content to render when condition is true.</div> -->
+<form class="w-full" (ngSubmit)="onSubmit()">
+  <div class="flex items-center border-b border-gray-800 py-2">
+    <input
+      class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+      type="guessedFinalWord"
+      name="guessedFinalWord"
+      [(ngModel)]="guessedFinalWord"
+      id="guessedFinalWord"
+      placeholder="Guess word"
+    />
+    <button class="flex-shrink-0 bg-gray-800 hover:bg-gray-700 border-gray-800 hover:border-gray-800 text-sm border-4 text-white py-1 px-2 rounded" type="submit">
+      Guess
+    </button>
+  </div>
+</form>

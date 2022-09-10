@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Game } from '../Game';
 import { Word } from '../Word';
@@ -22,5 +22,14 @@ export class GameService {
 
   createGame(): Observable<{ 'Game': Game; 'Word': Word; 'Finalword': FinalWord; }> {
     return this.http.post<{ 'Game': Game; 'Word': Word; 'Finalword': FinalWord; }>(this.apiUrl, httpOptions);
+  }
+
+  getGames(): Observable<Game[]> {
+    return this.http.get<Game[]>(this.apiUrl);
+  }
+
+  getGame(gameId: Number): Observable<{ 'Game': Game; 'Word': Word; 'Finalword': FinalWord; }> {
+    const url = `${this.apiUrl}/${gameId}`;
+    return this.http.get<{ 'Game': Game; 'Word': Word; 'Finalword': FinalWord; }>(url, httpOptions);
   }
 }

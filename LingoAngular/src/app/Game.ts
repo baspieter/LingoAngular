@@ -2,7 +2,7 @@ export interface Game {
   id?: number;
   round: number;
   status: number;
-  finalWordProgress: [];
+  finalWordProgress: String;
   greenBalls: number;
   redBalls: number;
 }

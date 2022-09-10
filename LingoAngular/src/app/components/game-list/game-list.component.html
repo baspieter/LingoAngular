@@ -1,1 +1,38 @@
-<p>game-list works!</p>
+<div class="flex items-center justify-between">
+  <p class="text-3xl dark:text-white">Games</p>
+  <a routerLink="/game" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold text-xs py-2 px-4 border border-gray-400 rounded">
+    New game
+  </a>
+</div>
+<div class="flex flex-col pt-6">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-4 inline-block min-w-full sm:px-6 lg:px-8">
+      <div class="overflow-x-auto max-h-[400px]">
+        <table class="min-w-full text-center">
+          <thead class="border-b bg-gray-800">
+          <tr>
+            <th scope="col" class="text-sm font-medium text-white px-6 py-4">
+              Game ID
+            </th>
+            <th scope="col" class="text-sm font-medium text-white px-6 py-4">
+              Actions
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="bg-white border-b" *ngFor="let game of games">
+            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              {{game.id}}
+            </td>
+            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <a routerLink="/game/{{game.id}}" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold text-xs py-1.5 px-4 border border-gray-400 rounded">
+                Continue
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

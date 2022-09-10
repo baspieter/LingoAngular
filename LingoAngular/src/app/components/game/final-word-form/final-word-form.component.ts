@@ -1,8 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FinalWord } from 'src/app/FinalWord';
 import { Game } from 'src/app/Game';
-import { Word } from 'src/app/Word';
 
 @Component({
   selector: 'app-final-word-form',
@@ -10,16 +8,35 @@ import { Word } from 'src/app/Word';
   styleUrls: ['./final-word-form.component.scss']
 })
 export class FinalWordFormComponent implements OnInit {
-  finalWordProgress: [] = []
+  @Output() onGuessFinalWord: EventEmitter<{finalWordGuess: String, gameId: Number | undefined}> = new EventEmitter();
+  finalWordProgress: any;
+  guessedFinalWord: string | undefined;
+
   constructor() { }
 
-  @Input() gameObservable: Observable<{ 'Game': Game; 'Word': Word; 'Finalword': FinalWord; }>| undefined
+  @Input() game: Game | undefined
+  @Input() finalWord: FinalWord | undefined
 
   ngOnInit(): void {
-    this.gameObservable?.forEach(result => this.setGameObject(result))
+    const finalWordProgress = this.game?.finalWordProgress;
+    if (finalWordProgress) {
+      this.finalWordProgress = finalWordProgress.split('');
+    }
   }
 
-  private setGameObject(result: {'Game': Game; 'Word': Word; 'Finalword': FinalWord; }): void {
-    this.finalWordProgress = result.Game.finalWordProgress
+  onSubmit() {
+    if (!this.game) {
+      alert('Something went wrong.')
+      return;
+    }
+
+    if (!this.guessedFinalWord) {
+      alert('Please add a name')
+      return;
+    }
+
+    const guessFinalWordObject = { finalWordGuess: this.guessedFinalWord, gameId: this.game.id };
+    this.onGuessFinalWord.emit(guessFinalWordObject);
+    this.guessedFinalWord = '';
   }
 }
