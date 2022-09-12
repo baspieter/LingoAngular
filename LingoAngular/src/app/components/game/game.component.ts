@@ -25,27 +25,48 @@ export class GameComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log(this.gameId);
-    this.getGame.then((result: any) => {
+    const method = (this.gameId) ? 'getGame' : 'createGame'
+    this.syncGame(method);
+  }
+
+
+  public submitFinalWord(result: {gameId: Number, finalWordGuess: String}) {
+    this.syncGame('submitFinalWord', { gameId: result.gameId, finalWord: result.finalWordGuess });
+  }
+
+  public syncGame(action: String, params: any = {}) {
+    new Promise((resolve, reject) => {
+      if (!action) return;
+
+      switch(action) { 
+        case 'getGame': { 
+          if (this.gameId) {
+            this.gameService.getGame(this.gameId).subscribe(result => {
+              resolve(result)
+            })
+          }
+          break; 
+        } 
+        case 'createGame': { 
+          this.gameService.createGame().subscribe(result => {
+            resolve(result);
+          });
+          break; 
+        }
+        case 'submitFinalWord': {
+          console.log(params.finalWord)
+          this.gameService.submitFinalWord(params.gameId, params.finalWord).subscribe(result => {
+            resolve(result)
+          });
+          break;
+        }
+      }
+    }).then((result: any) => {
       this.buildGameObjects(result);
     }).then(() => {
       this.checkGame();
     })
   }
-
-  readonly getGame = new Promise((resolve, reject) => {
-    console.log(this.gameId)
-    if (this.gameId) {
-      console.log('get game')
-      this.gameService.getGame(this.gameId).subscribe(result => {
-        this.buildGameObjects(result);
-      })
-    } else {
-      this.gameService.createGame().subscribe(result => {
-        resolve(result);
-      });
-    }
-  })
 
   private buildGameObjects(result: { Game: any; Word: any; Finalword: any; }): Promise<Boolean> {
     this.game = result.Game
@@ -57,6 +78,7 @@ export class GameComponent implements OnInit {
   }
 
   private checkGame(): void {
+    console.log('Checking game state')
     if (!this.game) {
       alert('Game data not found.')
       this.router.navigate(['/gameList']);
