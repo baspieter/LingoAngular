@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WordService } from '../../../services/word.service';
 import { Word } from '../../../Word';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-word',
@@ -10,7 +11,7 @@ import { Word } from '../../../Word';
 export class WordComponent implements OnInit {
   words: Word[] = [];
 
-  constructor(public wordService: WordService) { }
+  constructor(public wordService: WordService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.wordService.getWords().subscribe(words => this.words = words);
@@ -18,6 +19,8 @@ export class WordComponent implements OnInit {
 
   addWord(word: Word) {
     this.wordService.addWord(word).subscribe((word) => this.words.push(word));
+    
+    this.toastr.success('Word added');
   }
 
   removeWord(word: Word) {
@@ -27,6 +30,8 @@ export class WordComponent implements OnInit {
         .subscribe(
           () => (this.words = this.words.filter((t) => t.id !== word.id))
         );
+
+        this.toastr.success('Word removed');
     }
   }
 }

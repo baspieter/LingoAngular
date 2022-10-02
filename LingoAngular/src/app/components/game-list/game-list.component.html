@@ -1,31 +1,31 @@
-<div class="flex items-center justify-between">
-  <p class="text-3xl dark:text-white">Games</p>
-  <a routerLink="/game" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold text-xs py-2 px-4 border border-gray-400 rounded">
+<div class="u-flex u-items-center u-justify-between">
+  <p class="u-text-3xl u-text-gray-800">Games</p>
+  <a routerLink="/game" class="u-bg-white hover:u-bg-gray-100 u-text-gray-800 u-font-semibold u-text-xs u-py-2 u-px-4 border u-border-gray-400 u-rounded">
     New game
   </a>
 </div>
-<div class="flex flex-col pt-6">
-  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-    <div class="py-4 inline-block min-w-full sm:px-6 lg:px-8">
-      <div class="overflow-x-auto max-h-[400px]">
-        <table class="min-w-full text-center">
-          <thead class="border-b bg-gray-800">
+<div class="u-flex u-flex-col u-pt-6">
+  <div class="u-overflow-x-auto">
+    <div class="u-py-4 u-inline-block u-min-w-full">
+      <div class="u-overflow-x-auto u-max-h-[400px]">
+        <table class="u-min-w-full u-text-center">
+          <thead class="u-border-b u-bg-gray-800">
           <tr>
-            <th scope="col" class="text-sm font-medium text-white px-6 py-4">
+            <th scope="col" class="u-text-sm u-font-medium u-text-white u-px-6 u-py-4">
               Game ID
             </th>
-            <th scope="col" class="text-sm font-medium text-white px-6 py-4">
+            <th scope="col" class="u-text-sm u-font-medium u-text-white u-px-6 u-py-4">
               Actions
             </th>
           </tr>
           </thead>
           <tbody>
-          <tr class="bg-white border-b" *ngFor="let game of games">
-            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+          <tr class="u-bg-white u-border-b" *ngFor="let game of games">
+            <td class="u-text-sm u-text-gray-900 u-font-light u-px-6 u-py-4 u-whitespace-nowrap">
               {{game.id}}
             </td>
-            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-              <a routerLink="/game/{{game.id}}" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold text-xs py-1.5 px-4 border border-gray-400 rounded">
+            <td class="u-text-sm u-text-gray-900 u-font-light u-px-6 u-py-4 u-whitespace-nowrap">
+              <a routerLink="/game/{{game.id}}" class="u-bg-white hover:u-bg-gray-100 u-text-gray-800 u-font-semibold u-text-xs u-py-1.5 u-px-4 border u-border-gray-400 u-rounded">
                 Continue
               </a>
             </td>

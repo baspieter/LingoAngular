@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FinalWordService } from '../../../services/final-word.service';
 import { FinalWord } from '../../../FinalWord';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-final-word',
@@ -10,7 +11,7 @@ import { FinalWord } from '../../../FinalWord';
 export class FinalWordComponent implements OnInit {
   finalWords: FinalWord[] = [];
 
-  constructor(public finalWordService: FinalWordService) { }
+  constructor(public finalWordService: FinalWordService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.finalWordService.getFinalWords().subscribe(finalWords => this.finalWords = finalWords);
@@ -18,6 +19,8 @@ export class FinalWordComponent implements OnInit {
 
   addFinalWord(finalWord: FinalWord) {
     this.finalWordService.addFinalWord(finalWord).subscribe((finalWord) => this.finalWords.push(finalWord));
+
+    this.toastr.success('Finalword added');
   }
 
   removeFinalWord(finalWord: FinalWord) {
@@ -27,6 +30,8 @@ export class FinalWordComponent implements OnInit {
       .subscribe(
         () => (this.finalWords = this.finalWords.filter((t) => t.id !== finalWord.id))
       );
+
+      this.toastr.success('Finalword removed');
     }
   }
 }

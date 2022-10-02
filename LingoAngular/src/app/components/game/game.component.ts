@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from 'src/app/services/game.service';
 import { Game } from 'src/app/Game';
+import { GameWord } from 'src/app/GameWord';
 import { Word } from 'src/app/Word';
 import { FinalWord } from 'src/app/FinalWord';
-import { ActivatedRoute, Router, Navigation, ParamMap } from '@angular/router'; 
-import { async } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-game',
@@ -15,11 +16,12 @@ import { async } from 'rxjs';
 export class GameComponent implements OnInit {
   dataLoaded: Promise<boolean> | undefined
   game: Game | undefined
+  gameWord: GameWord | undefined
   finalWord: FinalWord | undefined
   word: Word | undefined
   gameId: Number | undefined
 
-  constructor(public gameService: GameService, private route: ActivatedRoute, private router: Router) {
+  constructor(public gameService: GameService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) {
     const idString = this.route.snapshot.paramMap.get('id');
     this.gameId = (idString == null) ? undefined : parseInt(idString);
    }
@@ -54,8 +56,10 @@ export class GameComponent implements OnInit {
           break; 
         }
         case 'submitFinalWord': {
-          console.log(params.finalWord)
           this.gameService.submitFinalWord(params.gameId, params.finalWord).subscribe(result => {
+            if (result.Game.status != 2) {
+              this.toastr.error('Wrong guess!');
+            } 
             resolve(result)
           });
           break;
@@ -68,8 +72,9 @@ export class GameComponent implements OnInit {
     })
   }
 
-  private buildGameObjects(result: { Game: any; Word: any; Finalword: any; }): Promise<Boolean> {
+  private buildGameObjects(result: { Game: Game; Gameword: GameWord; Word: Word; Finalword: FinalWord;}): Promise<Boolean> {
     this.game = result.Game
+    this.gameWord = result.Gameword
     this.finalWord = result.Finalword
     this.word = result.Word
     this.dataLoaded = Promise.resolve(true)
@@ -78,7 +83,6 @@ export class GameComponent implements OnInit {
   }
 
   private checkGame(): void {
-    console.log('Checking game state')
     if (!this.game) {
       alert('Game data not found.')
       this.router.navigate(['/gameList']);

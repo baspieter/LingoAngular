@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Game } from '../Game';
 import { Word } from '../Word';
 import { FinalWord } from '../FinalWord';
+import { GameWord } from '../GameWord';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -20,21 +21,21 @@ export class GameService {
 
   constructor(private http: HttpClient) { }
 
-  createGame(): Observable<{ 'Game': Game; 'Word': Word; 'Finalword': FinalWord; }> {
-    return this.http.post<{ 'Game': Game; 'Word': Word; 'Finalword': FinalWord; }>(this.apiUrl, httpOptions);
+  createGame(): Observable<{ 'Game': Game; 'Gameword': GameWord; 'Word': Word; 'Finalword': FinalWord; }> {
+    return this.http.post<{ 'Game': Game; 'Gameword': GameWord; 'Word': Word; 'Finalword': FinalWord; }>(this.apiUrl, httpOptions);
   }
 
   getGames(): Observable<Game[]> {
     return this.http.get<Game[]>(this.apiUrl);
   }
 
-  submitFinalWord(gameId: Number, finalWord: String): Observable<{ 'Game': Game; 'Word': Word; 'Finalword': FinalWord; }> {
+  submitFinalWord(gameId: Number, finalWord: String): Observable<{ 'Game': Game; 'Gameword': GameWord; 'Word': Word; 'Finalword': FinalWord; }> {
     const url = `${this.apiUrl}/${gameId}/submitFinalWord/${finalWord}`;
-    return this.http.get<{ 'Game': Game; 'Word': Word; 'Finalword': FinalWord; }>(url, httpOptions)
+    return this.http.get<{ 'Game': Game; 'Gameword': GameWord; 'Word': Word; 'Finalword': FinalWord; }>(url, httpOptions)
   }
 
-  getGame(gameId: Number): Observable<{ 'Game': Game; 'Word': Word; 'Finalword': FinalWord; }> {
+  getGame(gameId: Number): Observable<{ 'Game': Game; 'Gameword': GameWord; 'Word': Word; 'Finalword': FinalWord; }> {
     const url = `${this.apiUrl}/${gameId}`;
-    return this.http.get<{ 'Game': Game; 'Word': Word; 'Finalword': FinalWord; }>(url, httpOptions);
+    return this.http.get<{ 'Game': Game; 'Gameword': GameWord; 'Word': Word; 'Finalword': FinalWord; }>(url, httpOptions);
   }
 }
