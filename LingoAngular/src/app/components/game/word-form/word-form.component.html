@@ -1,0 +1,27 @@
+<div class="u-mx-64 u-mt-48 words">
+  <ul id="words">
+    <li *ngFor="let a of wordArray; let wordIndex = index">
+      <div id="word_{{wordIndex}}" class="u-flex u-items-center">
+        <div class="u-flex u-items-center" *ngFor="let a of letterArray; let letterIndex = index">
+          <div id="letter_{{letterIndex}}" class="u-border u-rounded u-bg-white u-px-4 u-py-2">.</div>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="u-flex u-items-center u-border-b u-border-gray-800 u-py-2">
+      <input
+        class="u-appearance-none u-bg-transparent u-border-none u-w-full u-text-gray-700 u-mr-3 u-py-1 u-px-2 u-leading-tight focus:u-outline-none"
+        type="guessedWord"
+        name="guessedWord"
+        [(ngModel)]="guessedWord"
+        id="guessedWord"
+        placeholder="Guess word"
+      />
+      <button class="u-flex-shrink-0 u-bg-gray-800 hover:u-bg-gray-700 u-border-gray-800 hover:u-border-gray-800 u-text-sm u-border-4 u-text-white u-py-1 u-px-2 u-rounded" type="submit">
+        Guess
+      </button>
+    </div>
+  </form>
+</div>

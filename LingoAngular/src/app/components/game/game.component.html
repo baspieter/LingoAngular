@@ -1,6 +1,7 @@
 <div *ngIf="dataLoaded | async; then thenBlock else elseBlock"></div>
 <ng-template #thenBlock>
   <app-final-word-form [game]="game" [finalWord]="finalWord" (onGuessFinalWord)="submitFinalWord($event)"></app-final-word-form>
+  <app-word-form [game]="game" [word]="word" [gameWord]="gameWord" (onGuessWord)="submitWord($event)"></app-word-form>
 </ng-template>
 
 <ng-template class="lds-ring" #elseBlock>

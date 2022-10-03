@@ -31,9 +31,12 @@ export class GameComponent implements OnInit {
     this.syncGame(method);
   }
 
-
   public submitFinalWord(result: {gameId: Number, finalWordGuess: String}) {
     this.syncGame('submitFinalWord', { gameId: result.gameId, finalWord: result.finalWordGuess });
+  }
+
+  public submitWord(result: {gameId: Number, wordGuess: String}) {
+    this.syncGame('submitWord', { gameId: result.gameId, word: result.wordGuess });
   }
 
   public syncGame(action: String, params: any = {}) {
@@ -64,6 +67,12 @@ export class GameComponent implements OnInit {
           });
           break;
         }
+        case 'submitWord': {
+          this.gameService.submitWord(params.gameId, params.word).subscribe(result => {
+            resolve(result)
+          });
+          break;
+        }
       }
     }).then((result: any) => {
       this.buildGameObjects(result);
@@ -83,6 +92,7 @@ export class GameComponent implements OnInit {
   }
 
   private checkGame(): void {
+    console.log(this.gameWord);
     if (!this.game) {
       alert('Game data not found.')
       this.router.navigate(['/gameList']);

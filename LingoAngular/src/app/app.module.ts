@@ -16,6 +16,7 @@ import { FinalWordComponent } from './components/content/final-word/final-word.c
 import { AddWordComponent } from './components/content/add-word/add-word.component';
 import { AddFinalWordComponent } from './components/content/add-final-word/add-final-word.component';
 import { FinalWordFormComponent } from './components/game/final-word-form/final-word-form.component';
+import { WordFormComponent } from './components/game/word-form/word-form.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { FinalWordFormComponent } from './components/game/final-word-form/final-
     FinalWordComponent,
     AddWordComponent,
     AddFinalWordComponent,
-    FinalWordFormComponent
+    FinalWordFormComponent,
+    WordFormComponent
   ],
   imports: [
     BrowserModule,
