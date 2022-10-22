@@ -92,7 +92,6 @@ export class GameComponent implements OnInit {
   }
 
   private checkGame(): void {
-    console.log(this.gameWord);
     if (!this.game) {
       alert('Game data not found.')
       this.router.navigate(['/gameList']);

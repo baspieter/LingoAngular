@@ -32,26 +32,88 @@ export class WordFormComponent implements AfterViewInit {
 
   setProgress() {
     const originalWord = this.word?.name;
+    if (!originalWord) return;
+
     for (let [index, word] of this.wordProgress.entries()) {
-      const lettersElement = document.getElementById(`word_${index}`)?.children
-      for (let i = 0; i < 6; i++) {
-        if (originalWord && lettersElement) {
-          const letterElement = lettersElement[i].children[0];
-          if (word[i] == originalWord[i]) {
-            letterElement.classList.remove('u-bg-white')
-            letterElement.classList.add('u-bg-lime-500')
-          } else if (originalWord.includes(word[i])) {
-            letterElement.classList.remove('u-bg-white')
-            letterElement.classList.add('u-bg-orange-300')
+      const wordStatus: Map<Number, Number> = this.setGreenLetters(word, originalWord);
+      const finalStatus: Map<Number, Number> = this.setOrangeLetters(wordStatus, word, originalWord)
+      const wordElement = document.getElementById(`word_${index}`)
+      
+      if (!wordElement || !finalStatus) return;
+
+      this.submitWordStatus(finalStatus, wordElement, word);
+    }
+  }
+
+  private setGreenLetters(word: String, originalWord: String) {
+    const wordStatus = new Map();
+    for (let i = 0; i < 6; i++) {
+      const colorNumber: Number = word[i] == originalWord[i] ? 1 : 0  
+      wordStatus.set(i, colorNumber);
+    }
+
+    return wordStatus;
+  }
+
+  private setOrangeLetters(wordStatus: Map<Number, Number>, word: String, originalWord: String) {
+    const orangeChars = new Array<String>
+
+    for (let i = 0; i < 6; i++) {
+      if (originalWord.includes(word[i])) {
+        // Checks how many times letter exists in originalWord
+        const originalLetterCount: Number = (originalWord.split(word[i]).length - 1)
+        // Check how many times we already changed this letter to orange.
+        const savedOrangeCharsCount: Number = this.getOccurrenceInArray(orangeChars, word[i])
+
+        
+        // First condition checks if letter is made orange earlier or how many times.
+        // Second condition checks if the wrong placed letter is already made green somewhere else.
+        
+        if (this.checkGreenMatches(wordStatus, word[i], originalLetterCount, word) && savedOrangeCharsCount < originalLetterCount) {
+          if (wordStatus.get(i) != 1) {
+            wordStatus.set(i, 2);
+            orangeChars.push(word[i]);
           }
-          letterElement.innerHTML = word[i];
         }
       }
     }
 
-    if (this.wordProgress.length + 1 < 6){
-      console.log('Show progress so far WIP')
+    return wordStatus;
+  }
+
+  private checkGreenMatches(wordStatus: Map<Number, Number>, letter: String, wordLetterCount: Number, word: String) {
+    let greenCount = 0;
+    let orangeCount = 0;
+    for (let i = 0; i < 6; i++) {
+      if (word[i] == letter) {
+        if (wordStatus.get(i) == 1) {
+          greenCount++
+        } else if (wordStatus.get(i) == 2) {
+          orangeCount++;
+        }
+      }
     }
+    return wordLetterCount > (greenCount + orangeCount)
+  }
+
+  private submitWordStatus(finalStatus: Map<Number, Number>, wordElement: HTMLElement, word: String) {
+    const lettersElement = wordElement.children;
+
+    for (let i = 0; i < 6; i++) {
+      const letterElement = lettersElement[i].children[0];
+      letterElement.innerHTML = word[i];
+      if (finalStatus.get(i) == 1) {
+        letterElement.classList.add('u-bg-lime-500');
+      } else if (finalStatus.get(i) == 2) {
+        letterElement.classList.add('u-bg-orange-300');
+      }
+    }
+  }
+
+  private getOccurrenceInArray(array: Array<String>, value: String) {
+    let count = 0;
+    array.forEach((v) => (v === value && count++));
+    return count;
   }
 
   onSubmit() {
