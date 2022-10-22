@@ -14,7 +14,6 @@ export class WordFormComponent implements AfterViewInit {
   wordArray: Array<String> = new Array(5);
   letterArray: Array<Number> = new Array(6);
   wordProgress!: Array<String>;
-  bestWordGuess!: String;
   @Input() game: Game | undefined
   @Input() gameWord: GameWord | undefined
   @Input() word: Word | undefined
@@ -25,7 +24,6 @@ export class WordFormComponent implements AfterViewInit {
     if (!this.game || !this.gameWord) return;
 
     this.wordProgress = this.gameWord.wordProgress;
-    console.log(this.wordProgress);
 
     this.setProgress();
   }
@@ -52,17 +50,62 @@ export class WordFormComponent implements AfterViewInit {
         const nextWordElement = document.getElementById(`word_${index + 1}`)
         if (!nextWordElement) return;
 
-        this.createNextWord(finalStatus, originalWord, nextWordElement);
+        const bestguessedWord: String = this.setBestWordGuess(originalWord, word);
+        const bestguessedWordMap: Map<Number, Number> = this.convertWordToMap(bestguessedWord, originalWord)
+        this.createNextWord(bestguessedWordMap, nextWordElement, bestguessedWord);
       }
     }
   }
 
-  private createNextWord(finalStatus: Map<Number, Number>, originalWord: String, element: HTMLElement) {
+  private setBestWordGuess(originalWord: String, word: String) {
+    let bestWordCount: Number = 0;
+    let bestWord: String = word;
+
+    for (let [index, word] of this.wordProgress.entries()) {
+      let correct_count = 0
+
+      for (let i = 0; i < 6; i++) {
+        if (word[i] == originalWord[i]) {
+          correct_count++
+        }
+      }
+      if (correct_count >= bestWordCount) {
+        bestWordCount = correct_count
+        bestWord = word;
+      }
+    }
+
+    return bestWord;
+  }
+
+  private convertWordToMap(word: String, originalWord: String) {
+    let map: Map<Number, Number> = new Map();
+
+    for (let i = 0; i < 6; i++) {
+      (originalWord[i] == word[i]) ? map.set(i, 1) : map.set(i, 0);
+    }
+
+    return map;
+  }
+
+  private correctLettersCount(statusMap: Map<Number, Number>) {
+    let count = 0;
+    for (let i = 0; i < 6; i++) {
+      if (statusMap.get(i) == 1) {
+        count++
+      }
+    }
+
+    return count;
+  }
+
+  private createNextWord(wordMap: Map<Number, Number>, element: HTMLElement, word: String) {
+
     const lettersElement = element.children;
     for (let i = 0; i < 6; i++) {
-      if (finalStatus.get(i) == 1) {
+      if (wordMap.get(i) == 1) {
         const letterElement = lettersElement[i].children[0];
-        letterElement.innerHTML = originalWord[i];
+        letterElement.innerHTML = word[i];
       }
     }
   }
@@ -90,7 +133,6 @@ export class WordFormComponent implements AfterViewInit {
         // Check how many times we already changed this letter to orange.
         const savedOrangeCharsCount: Number = this.getOccurrenceInArray(orangeChars, word[i])
 
-        
         // First condition checks if the wrong placed letter is already made green somewhere else.
         // Second condition checks if letter is made orange earlier and how many times.
         if (this.checkGreenMatches(wordStatus, word[i], originalLetterCount, word) && savedOrangeCharsCount < originalLetterCount) {
