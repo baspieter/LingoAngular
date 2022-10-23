@@ -43,4 +43,9 @@ export class GameService {
     const url = `${this.apiUrl}/${gameId}`;
     return this.http.get<{ 'Game': Game; 'Gameword': GameWord; 'Word': Word; 'Finalword': FinalWord; }>(url, httpOptions);
   }
+
+  nextRound(gameId: Number): Observable<{ 'Game': Game; 'Gameword': GameWord; 'Word': Word; 'Finalword': FinalWord; }> {
+    const url = `${this.apiUrl}/${gameId}/nextRound`;
+    return this.http.get<{ 'Game': Game; 'Gameword': GameWord; 'Word': Word; 'Finalword': FinalWord; }>(url, httpOptions)
+  }
 }

@@ -1,9 +1,9 @@
-<div class="u-mx-64 u-mt-48 words">
+<div class="u-mx-64 u-mt-24 words">
   <ul id="words">
     <li *ngFor="let a of wordArray; let wordIndex = index">
       <div id="word_{{wordIndex}}" class="u-flex u-items-center">
         <div class="u-flex u-items-center" *ngFor="let a of letterArray; let letterIndex = index">
-          <div id="letter_{{letterIndex}}" class="u-border u-rounded u-bg-white u-px-4 u-py-2">.</div>
+          <div id="letter_{{letterIndex}}" class="u-border u-rounded u-bg-white u-text-center u-min-w-[48px] u-min-h-[44px] u-text-[24px]"></div>
         </div>
       </div>
     </li>
@@ -24,4 +24,13 @@
       </button>
     </div>
   </form>
+
+  <div *ngIf="gameFinished; then thenBlock"></div>
+  <ng-template #thenBlock>
+    <div class="u-text-center u-mt-[24px] u-mb-[48px]">
+      <button (click)="nextRound()" class="u-flex-shrink-0 u-bg-gray-800 hover:u-bg-gray-700 u-border-gray-800 hover:u-border-gray-800 u-text-sm u-border-4 u-text-white u-py-1 u-px-2 u-rounded">
+        Next round
+      </button>
+    </div>
+  </ng-template>
 </div>

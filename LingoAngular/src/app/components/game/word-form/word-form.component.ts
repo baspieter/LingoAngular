@@ -2,6 +2,10 @@ import { Component, Input, EventEmitter, Output, AfterViewInit } from '@angular/
 import { GameWord } from 'src/app/GameWord';
 import { Game } from 'src/app/Game';
 import { Word } from 'src/app/Word';
+import { IndividualConfig, ToastrService } from 'ngx-toastr';
+import { CommonService } from 'src/app/services/common.service';
+import { toastPayload } from 'src/app/ToastPayload';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-word-form',
@@ -10,33 +14,80 @@ import { Word } from 'src/app/Word';
 })
 export class WordFormComponent implements AfterViewInit {
   @Output() onGuessWord: EventEmitter<{ gameId: number, wordGuess: string }> = new EventEmitter();
-  guessedWord: string | undefined;
-  wordArray: Array<String> = new Array(5);
-  letterArray: Array<Number> = new Array(6);
-  wordProgress!: Array<String>;
+  @Output() onNextRound: EventEmitter<{ gameId: number }> = new EventEmitter();
   @Input() game: Game | undefined
   @Input() gameWord: GameWord | undefined
   @Input() word: Word | undefined
 
-  constructor() {
-   }
-  ngAfterViewInit(): void {
-    if (!this.game || !this.gameWord) return;
+  gameFinished: Boolean = false;
+  guessedWord: string | undefined;
+  wordArray: Array<String> = new Array(5);
+  letterArray: Array<Number> = new Array(6);
+  wordProgress!: Array<String>;
+  correctWord!: String;
+  toast!: toastPayload;
 
+  constructor(private cs: CommonService) {}
+
+  ngAfterViewInit(): void {
+    if (!this.game || !this.gameWord || !this.word) return;
+  
+    this.correctWord = this.word.name;
     this.wordProgress = this.gameWord.wordProgress;
+    this.gameFinished = (this.gameWord?.finished || this.gameWord?.wordProgress.length == 5) ? true : false
 
     this.setProgress();
+
+    if (this.gameFinished) {
+      this.finishRound();
+      return;
+    }
+
+    // Pre fill the next word element.
+    if (this.wordProgress.length < 5 && this.wordProgress.length > 0) this.prefillNextWord();
+
+    document.getElementById('guessedWord')?.focus();
   }
 
-  setProgress() {
-    const originalWord = this.word?.name;
-    if (!originalWord) return;
+  nextRound() {
+    if (this.game && this.game?.id) {
+      this.onNextRound.emit({gameId: this.game.id});
+    }
+  }
 
+  onSubmit() {
+    if (!this.game) {
+      alert('Something went wrong.')
+      return;
+    }
+
+    if (this.gameWord?.finished) {
+      alert('Round has ended.')
+      return;
+    }
+
+    if (!this.guessedWord) {
+      alert('Please add a name')
+      return;
+    }
+
+    if (this.guessedWord.length != 6) {
+      alert('Word should be 6 characters long.')
+      return;
+    }
+
+    if (this.game.id) {
+      this.onGuessWord.emit({gameId: this.game.id, wordGuess: this.guessedWord});
+      this.guessedWord = '';
+    }
+  }
+
+  private setProgress() {
     for (let [index, word] of this.wordProgress.entries()) {
       // Set all green letters per word
-      const wordStatus: Map<Number, Number> = this.setGreenLetters(word, originalWord);
+      const wordStatus: Map<Number, Number> = this.setGreenLetters(word);
       // Set all orange letters per word
-      const finalStatus: Map<Number, Number> = this.setOrangeLetters(wordStatus, word, originalWord)
+      const finalStatus: Map<Number, Number> = this.setOrangeLetters(wordStatus, word)
       // Define the current word element so we can style it
       const wordElement = document.getElementById(`word_${index}`)
       
@@ -44,17 +95,16 @@ export class WordFormComponent implements AfterViewInit {
 
       // Submit all letter statuses per word.
       this.submitWordStatus(finalStatus, wordElement, word);
-
-      // Pre fill in the next word element.
-      if (this.wordProgress.length == (index + 1)) {
-        const nextWordElement = document.getElementById(`word_${index + 1}`)
-        if (!nextWordElement) return;
-
-        const bestguessedWord: String = this.setBestWordGuess(originalWord, word);
-        const bestguessedWordMap: Map<Number, Number> = this.convertWordToMap(bestguessedWord, originalWord)
-        this.createNextWord(bestguessedWordMap, nextWordElement, bestguessedWord);
-      }
     }
+  }
+
+  private prefillNextWord() {
+    const nextWordElement = document.getElementById(`word_${this.wordProgress.length}`)
+    if (!nextWordElement) return;
+
+    const bestguessedWord: String = this.setBestWordGuess(this.correctWord, this.wordProgress[this.wordProgress.length - 1]);
+    const bestguessedWordMap: Map<Number, Number> = this.convertWordToMap(bestguessedWord)
+    this.createNextWord(bestguessedWordMap, nextWordElement, bestguessedWord);
   }
 
   private setBestWordGuess(originalWord: String, word: String) {
@@ -78,25 +128,14 @@ export class WordFormComponent implements AfterViewInit {
     return bestWord;
   }
 
-  private convertWordToMap(word: String, originalWord: String) {
+  private convertWordToMap(word: String) {
     let map: Map<Number, Number> = new Map();
 
     for (let i = 0; i < 6; i++) {
-      (originalWord[i] == word[i]) ? map.set(i, 1) : map.set(i, 0);
+      (this.correctWord[i] == word[i]) ? map.set(i, 1) : map.set(i, 0);
     }
 
     return map;
-  }
-
-  private correctLettersCount(statusMap: Map<Number, Number>) {
-    let count = 0;
-    for (let i = 0; i < 6; i++) {
-      if (statusMap.get(i) == 1) {
-        count++
-      }
-    }
-
-    return count;
   }
 
   private createNextWord(wordMap: Map<Number, Number>, element: HTMLElement, word: String) {
@@ -110,26 +149,26 @@ export class WordFormComponent implements AfterViewInit {
     }
   }
 
-  private setGreenLetters(word: String, originalWord: String) {
+  private setGreenLetters(word: String) {
     const wordStatus = new Map();
 
     // Compare each letter and position with originalWord.
     // Whenever there is a match, the wordStatus map will be updated.
     for (let i = 0; i < 6; i++) {
-      const colorNumber: Number = word[i] == originalWord[i] ? 1 : 0  
+      const colorNumber: Number = word[i] == this.correctWord[i] ? 1 : 0  
       wordStatus.set(i, colorNumber);
     }
 
     return wordStatus;
   }
 
-  private setOrangeLetters(wordStatus: Map<Number, Number>, word: String, originalWord: String) {
+  private setOrangeLetters(wordStatus: Map<Number, Number>, word: String) {
     const orangeChars = new Array<String>
 
     for (let i = 0; i < 6; i++) {
-      if (originalWord.includes(word[i])) {
+      if (this.correctWord.includes(word[i])) {
         // Checks how many times letter exists in originalWord
-        const originalLetterCount: Number = (originalWord.split(word[i]).length - 1)
+        const originalLetterCount: Number = (this.correctWord.split(word[i]).length - 1)
         // Check how many times we already changed this letter to orange.
         const savedOrangeCharsCount: Number = this.getOccurrenceInArray(orangeChars, word[i])
 
@@ -190,26 +229,22 @@ export class WordFormComponent implements AfterViewInit {
     return count;
   }
 
-  onSubmit() {
-    if (!this.game) {
-      alert('Something went wrong.')
-      return;
+  private finishRound() {
+    if (this.wordProgress[this.wordProgress.length - 1] == this.correctWord) {
+      this.toast = {
+        title: 'Yay, correct word!',
+        message: `You guessed: ${this.correctWord}. Hit the continue button to start the next round.`,
+        type: 'success',
+        ic: { timeOut: 20000000, closeButton: true, } as IndividualConfig,
+      };
+    } else {
+      this.toast = {
+        title: 'Oops ran out of guesses! :(',
+        message: `The correct word is: ${this.correctWord}. Hit the continue button to start the next round.`,
+        type: 'error',
+        ic: { timeOut: 20000000, closeButton: true, } as IndividualConfig,
+      };
     }
-
-    if (!this.guessedWord) {
-      alert('Please add a name')
-      return;
-    }
-
-    if (this.guessedWord.length != 6)
-    {
-      alert('Word should be 6 characters long.')
-      return;
-    }
-
-    if (this.game.id) {
-      this.onGuessWord.emit({gameId: this.game.id, wordGuess: this.guessedWord});
-      this.guessedWord = '';
-    }
+    this.cs.showToast(this.toast);
   }
 }

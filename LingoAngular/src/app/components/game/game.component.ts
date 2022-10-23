@@ -39,6 +39,10 @@ export class GameComponent implements OnInit {
     this.syncGame('submitWord', { gameId: result.gameId, word: result.wordGuess });
   }
 
+  public nextRound(result: { gameId: Number }) {
+    this.syncGame('nextRound', { gameId: result.gameId });
+  }
+
   public syncGame(action: String, params: any = {}) {
     new Promise((resolve, reject) => {
       if (!action) return;
@@ -69,6 +73,12 @@ export class GameComponent implements OnInit {
         }
         case 'submitWord': {
           this.gameService.submitWord(params.gameId, params.word).subscribe(result => {
+            resolve(result)
+          });
+          break;
+        }
+        case 'nextRound': {
+          this.gameService.nextRound(params.gameId).subscribe(result => {
             resolve(result)
           });
           break;
