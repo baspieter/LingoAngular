@@ -13,7 +13,7 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./word-form.component.scss']
 })
 export class WordFormComponent implements AfterViewInit {
-  @Output() onGuessWord: EventEmitter<{ gameId: number, wordGuess: string }> = new EventEmitter();
+  @Output() onGuessWord: EventEmitter<{ gameWordId: number, wordGuess: string }> = new EventEmitter();
   @Output() onNextRound: EventEmitter<{ gameId: number }> = new EventEmitter();
   @Input() game: Game | undefined
   @Input() gameWord: GameWord | undefined
@@ -35,7 +35,10 @@ export class WordFormComponent implements AfterViewInit {
     this.correctWord = this.word.name;
     this.wordProgress = this.gameWord.wordProgress;
     this.gameFinished = (this.gameWord?.finished || this.gameWord?.wordProgress.length == 5) ? true : false
-
+    console.log(this.wordProgress)
+    console.log(this.correctWord)
+    console.log(this.gameWord);
+    console.log(this.word)
     this.setProgress();
 
     if (this.gameFinished) {
@@ -76,8 +79,8 @@ export class WordFormComponent implements AfterViewInit {
       return;
     }
 
-    if (this.game.id) {
-      this.onGuessWord.emit({gameId: this.game.id, wordGuess: this.guessedWord});
+    if (this.gameWord?.id) {
+      this.onGuessWord.emit({gameWordId: this.gameWord.id, wordGuess: this.guessedWord});
       this.guessedWord = '';
     }
   }
@@ -230,6 +233,8 @@ export class WordFormComponent implements AfterViewInit {
   }
 
   private finishRound() {
+    document.getElementById('nextRoundBtn')?.classList.remove('u-hidden');
+
     if (this.wordProgress[this.wordProgress.length - 1] == this.correctWord) {
       this.toast = {
         title: 'Yay, correct word!',

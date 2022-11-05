@@ -34,8 +34,9 @@ export class GameService {
     return this.http.get<{ 'Game': Game; 'Gameword': GameWord; 'Word': Word; 'Finalword': FinalWord; }>(url, httpOptions)
   }
 
-  submitWord(gameId: Number, word: String): Observable<{ 'Game': Game; 'Gameword': GameWord; 'Word': Word; 'Finalword': FinalWord; }> {
-    const url = `${this.apiUrl}/${gameId}/submitWord/${word}`;
+  submitWord(gameWordId: Number, word: String): Observable<{ 'Game': Game; 'Gameword': GameWord; 'Word': Word; 'Finalword': FinalWord; }> {
+    console.log('game servcie word:', word)
+    const url = `${this.apiUrl}/${gameWordId}/submitWord/${word}`;
     return this.http.get<{ 'Game': Game; 'Gameword': GameWord; 'Word': Word; 'Finalword': FinalWord; }>(url, httpOptions)
   }
 

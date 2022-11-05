@@ -25,12 +25,9 @@
     </div>
   </form>
 
-  <div *ngIf="gameFinished; then thenBlock"></div>
-  <ng-template #thenBlock>
-    <div class="u-text-center u-mt-[24px] u-mb-[48px]">
-      <button (click)="nextRound()" class="u-flex-shrink-0 u-bg-gray-800 hover:u-bg-gray-700 u-border-gray-800 hover:u-border-gray-800 u-text-sm u-border-4 u-text-white u-py-1 u-px-2 u-rounded">
-        Next round
-      </button>
-    </div>
-  </ng-template>
+  <div id="nextRoundBtn" class="u-text-center u-mt-[24px] u-mb-[48px] u-hidden">
+    <button (click)="nextRound()" class="u-flex-shrink-0 u-bg-gray-800 hover:u-bg-gray-700 u-border-gray-800 hover:u-border-gray-800 u-text-sm u-border-4 u-text-white u-py-1 u-px-2 u-rounded">
+      Next round
+    </button>
+  </div>
 </div>
