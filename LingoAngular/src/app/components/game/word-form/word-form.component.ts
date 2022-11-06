@@ -26,19 +26,24 @@ export class WordFormComponent implements AfterViewInit {
   wordProgress!: Array<String>;
   correctWord!: String;
   toast!: toastPayload;
+  wordFormDisabled: string | boolean = false;
 
   constructor(private cs: CommonService) {}
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     if (!this.game || !this.gameWord || !this.word) return;
   
     this.correctWord = this.word.name;
     this.wordProgress = this.gameWord.wordProgress;
     this.gameFinished = (this.gameWord?.finished || this.gameWord?.wordProgress.length == 5) ? true : false
-    console.log(this.wordProgress)
-    console.log(this.correctWord)
-    console.log(this.gameWord);
-    console.log(this.word)
+
+    if (this.gameFinished) {
+      this.wordFormDisabled = "true";
+    }
+  }
+
+  ngAfterViewInit(): void {
+
     this.setProgress();
 
     if (this.gameFinished) {
@@ -50,6 +55,10 @@ export class WordFormComponent implements AfterViewInit {
     if (this.wordProgress.length < 5 && this.wordProgress.length > 0) this.prefillNextWord();
 
     document.getElementById('guessedWord')?.focus();
+  }
+
+  ngOnDestroy() {
+    this.cs.clearToast();
   }
 
   nextRound() {
@@ -234,7 +243,6 @@ export class WordFormComponent implements AfterViewInit {
 
   private finishRound() {
     document.getElementById('nextRoundBtn')?.classList.remove('u-hidden');
-
     if (this.wordProgress[this.wordProgress.length - 1] == this.correctWord) {
       this.toast = {
         title: 'Yay, correct word!',

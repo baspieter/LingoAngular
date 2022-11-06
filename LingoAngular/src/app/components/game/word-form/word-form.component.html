@@ -1,4 +1,5 @@
-<div class="u-mx-64 u-mt-24 words">
+<div class="words">
+  <h1 class="u-pb-2">Game word</h1>
   <ul id="words">
     <li *ngFor="let a of wordArray; let wordIndex = index">
       <div id="word_{{wordIndex}}" class="u-flex u-items-center">
@@ -9,17 +10,18 @@
     </li>
   </ul>
 
-  <form (ngSubmit)="onSubmit()">
+  <form class="u-pt-6" (ngSubmit)="onSubmit()">
     <div class="u-flex u-items-center u-border-b u-border-gray-800 u-py-2">
       <input
-        class="u-appearance-none u-bg-transparent u-border-none u-w-full u-text-gray-700 u-mr-3 u-py-1 u-px-2 u-leading-tight focus:u-outline-none"
+        [disabled]="wordFormDisabled"
+        class="form-element u-appearance-none u-bg-transparent u-border-none u-w-full u-text-gray-700 u-mr-3 u-py-1 u-px-2 u-leading-tight focus:u-outline-none"
         type="guessedWord"
         name="guessedWord"
         [(ngModel)]="guessedWord"
         id="guessedWord"
         placeholder="Guess word"
       />
-      <button class="u-flex-shrink-0 u-bg-gray-800 hover:u-bg-gray-700 u-border-gray-800 hover:u-border-gray-800 u-text-sm u-border-4 u-text-white u-py-1 u-px-2 u-rounded" type="submit">
+      <button [disabled]="wordFormDisabled" [ngClass]="{'hover:u-bg-gray-700 hover:u-border-gray-800 u-bg-gray-800 u-border-gray-800': !wordFormDisabled, 'u-bg-gray-400 u-border-gray-400': wordFormDisabled}" class="form-element u-flex-shrink-0 u-text-sm u-border-4 u-text-white u-py-1 u-px-2 u-rounded" type="submit">
         Guess
       </button>
     </div>

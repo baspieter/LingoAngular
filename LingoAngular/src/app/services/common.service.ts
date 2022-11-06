@@ -16,4 +16,8 @@ export class CommonService {
       'toast-' + toast.type
     );
   }
+
+  clearToast() {
+    this.toastr.clear();
+  }
 }
