@@ -5,7 +5,6 @@ import { Word } from 'src/app/Word';
 import { IndividualConfig, ToastrService } from 'ngx-toastr';
 import { CommonService } from 'src/app/services/common.service';
 import { toastPayload } from 'src/app/ToastPayload';
-import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-word-form',
@@ -15,9 +14,9 @@ import { Title } from '@angular/platform-browser';
 export class WordFormComponent implements AfterViewInit {
   @Output() onGuessWord: EventEmitter<{ gameWordId: number, wordGuess: string }> = new EventEmitter();
   @Output() onNextRound: EventEmitter<{ gameId: number }> = new EventEmitter();
-  @Input() game: Game | undefined
-  @Input() gameWord: GameWord | undefined
-  @Input() word: Word | undefined
+  @Input() game!: Game
+  @Input() gameWord!: GameWord
+  @Input() word!: Word
 
   gameFinished: Boolean = false;
   guessedWord: string | undefined;
@@ -51,6 +50,8 @@ export class WordFormComponent implements AfterViewInit {
       return;
     }
 
+    // Pre fill first letter.
+    this.prefillFirstLetter();
     // Pre fill the next word element.
     if (this.wordProgress.length < 5 && this.wordProgress.length > 0) this.prefillNextWord();
 
@@ -95,6 +96,9 @@ export class WordFormComponent implements AfterViewInit {
   }
 
   private setProgress() {
+    if (this.wordProgress.length == 0) {
+      
+    }
     for (let [index, word] of this.wordProgress.entries()) {
       // Set all green letters per word
       const wordStatus: Map<Number, Number> = this.setGreenLetters(word);
@@ -259,5 +263,12 @@ export class WordFormComponent implements AfterViewInit {
       };
     }
     this.cs.showToast(this.toast);
+  }
+
+  private prefillFirstLetter() {
+    const wordElement = document.getElementById(`word_${this.wordProgress.length}`)
+    if (wordElement) {
+      wordElement.children[0].children[0].innerHTML = this.correctWord[0];
+    }
   }
 }

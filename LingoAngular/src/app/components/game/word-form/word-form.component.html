@@ -1,35 +1,34 @@
-<div class="words">
-  <h1 class="u-pb-2">Game word</h1>
-  <ul id="words">
+<div class="words u-w-[340px] u-mx-auto u-border u-border-gray-200 u-p-6 u-bg-white u-rounded">
+  <ul id="words u-w-full">
     <li *ngFor="let a of wordArray; let wordIndex = index">
-      <div id="word_{{wordIndex}}" class="u-flex u-items-center">
+      <div id="word_{{wordIndex}}" class="u-flex u-items-center u-flex-1">
         <div class="u-flex u-items-center" *ngFor="let a of letterArray; let letterIndex = index">
-          <div id="letter_{{letterIndex}}" class="u-border u-rounded u-bg-white u-text-center u-min-w-[48px] u-min-h-[44px] u-text-[24px]"></div>
+          <div id="letter_{{letterIndex}}" class="u-border u-border-gray-300 u-rounded u-bg-white u-text-center u-min-w-[48px] u-min-h-[44px] u-text-[28px]"></div>
         </div>
       </div>
     </li>
   </ul>
-
-  <form class="u-pt-6" (ngSubmit)="onSubmit()">
-    <div class="u-flex u-items-center u-border-b u-border-gray-800 u-py-2">
-      <input
-        [disabled]="wordFormDisabled"
-        class="form-element u-appearance-none u-bg-transparent u-border-none u-w-full u-text-gray-700 u-mr-3 u-py-1 u-px-2 u-leading-tight focus:u-outline-none"
-        type="guessedWord"
-        name="guessedWord"
-        [(ngModel)]="guessedWord"
-        id="guessedWord"
-        placeholder="Guess word"
-      />
-      <button [disabled]="wordFormDisabled" [ngClass]="{'hover:u-bg-gray-700 hover:u-border-gray-800 u-bg-gray-800 u-border-gray-800': !wordFormDisabled, 'u-bg-gray-400 u-border-gray-400': wordFormDisabled}" class="form-element u-flex-shrink-0 u-text-sm u-border-4 u-text-white u-py-1 u-px-2 u-rounded" type="submit">
-        Guess
+  <form (ngSubmit)="onSubmit()" class="u-flex u-items-center u-mt-[24px] u-w-full">
+    <input
+      [disabled]="wordFormDisabled"
+      class="u-w-[250px] u-shadow u-appearance-none u-border u-rounded u-py-2 u-px-3 u-text-gray-700 u-leading-tight u-focus:outline-none u-focus:shadow-outline"
+      type="guessedWord"
+      name="guessedWord"
+      [(ngModel)]="guessedWord"
+      id="guessedWord"
+      maxlength="6"
+    />
+    <div class="u-ml-1">
+      <button [disabled]="wordFormDisabled" [ngClass]="{'hover:u-bg-gray-700 hover:u-border-gray-800 u-w-full u-bg-gray-800 u-border-gray-800': !wordFormDisabled, 'u-bg-gray-400 u-border-gray-400': wordFormDisabled}" class="form-element u-w-[38px] u-h-[38px] u-text-white u-rounded" type="submit">
+        <mat-icon aria-label="Submit word" class="u-text-lg">send</mat-icon>
       </button>
     </div>
   </form>
 
-  <div id="nextRoundBtn" class="u-text-center u-mt-[24px] u-mb-[48px] u-hidden">
+  <div id="nextRoundBtn" class="u-text-center u-mt-[24px] u-mb-[12px] u-hidden">
     <button (click)="nextRound()" class="u-flex-shrink-0 u-bg-gray-800 hover:u-bg-gray-700 u-border-gray-800 hover:u-border-gray-800 u-text-sm u-border-4 u-text-white u-py-1 u-px-2 u-rounded">
       Next round
     </button>
   </div>
 </div>
+

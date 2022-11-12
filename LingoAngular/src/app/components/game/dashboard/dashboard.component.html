@@ -1,0 +1,22 @@
+<div class="u-flex u-items-center">
+  <h1>Game {{game.id}}</h1>
+  <div class="u-ml-2 u-px-2 u-border u-rounded-lg {{statusColor}} u-text-[11px] u-text-white">
+    {{gameStatus}}
+  </div>
+  <div class="u-ml-1 u-px-2 u-border u-rounded-lg u-bg-gray-500 u-text-[11px] u-text-white">
+    Round {{game.round}}/10
+  </div>
+  <div class="u-ml-1 u-px-2 u-border u-rounded-lg u-bg-gray-500 u-text-[11px] u-text-white">
+    Timer
+  </div>
+</div>
+<div class="u-pt-2">
+  <p class="u-text-xs u-pr-3 u-pb-1">Finalword</p>
+  <div class="u-flex u-items-center">
+    <div *ngFor="let item of finalWordProgress">
+      <div class="u-border u-bg-white u-text-xs u-py-1 u-px-3">
+        {{item}}
+      </div>
+    </div>
+  </div>
+</div>

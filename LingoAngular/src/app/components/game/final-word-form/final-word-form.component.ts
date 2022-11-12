@@ -18,10 +18,7 @@ export class FinalWordFormComponent implements OnInit {
   @Input() finalWord: FinalWord | undefined
 
   ngOnInit(): void {
-    const finalWordProgress = this.game?.finalWordProgress;
-    if (finalWordProgress) {
-      this.finalWordProgress = finalWordProgress.split('');
-    }
+
   }
 
   onSubmit() {

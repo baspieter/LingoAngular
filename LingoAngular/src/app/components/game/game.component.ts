@@ -6,6 +6,7 @@ import { Word } from 'src/app/Word';
 import { FinalWord } from 'src/app/FinalWord';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Location } from '@angular/common'; 
 
 @Component({
   selector: 'app-game',
@@ -15,13 +16,13 @@ import { ToastrService } from 'ngx-toastr';
 
 export class GameComponent implements OnInit {
   dataLoaded: Promise<boolean> | undefined
-  game: Game | undefined
-  gameWord: GameWord | undefined
-  finalWord: FinalWord | undefined
-  word: Word | undefined
+  game!: Game
+  gameWord!: GameWord
+  finalWord!: FinalWord
+  word!: Word
   gameId: Number | undefined
 
-  constructor(public gameService: GameService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) {
+  constructor(public gameService: GameService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService, private location: Location) {
     const idString = this.route.snapshot.paramMap.get('id');
     this.gameId = (idString == null) ? undefined : parseInt(idString);
    }
@@ -44,6 +45,8 @@ export class GameComponent implements OnInit {
   }
 
   public syncGame(action: String, params: any = {}) {
+    console.log('syncGame!')
+    console.log(action)
     new Promise((resolve, reject) => {
       if (!action) return;
 
@@ -85,34 +88,29 @@ export class GameComponent implements OnInit {
         }
       }
     }).then((result: any) => {
-      this.buildGameObjects(result);
+      if (!result.Game || !result.Gameword || !result.Finalword || !result.Word) {
+        this.dataLoaded = Promise.resolve(false);
+      } else {
+        this.game = result.Game
+        this.gameWord = result.Gameword
+        this.finalWord = result.Finalword
+        this.word = result.Word
+        this.dataLoaded = Promise.resolve(true);
+        this.location.replaceState(`/game/${this.game.id}`);
+      }
+      return this.dataLoaded;
     }).then(() => {
-      this.checkGame();
+      if (!this.dataLoaded) {
+        alert('Game data not found.')
+        this.router.navigate(['/gameList']);
+        return;
+      }
+
+      if (this.game.status == 2) {
+        alert('Game finished')
+        this.router.navigate(['/gameList']);
+        return;
+      }
     })
-  }
-
-  private buildGameObjects(result: { Game: Game; Gameword: GameWord; Word: Word; Finalword: FinalWord;}): Promise<Boolean> {
-    this.game = result.Game
-    this.gameWord = result.Gameword
-    this.finalWord = result.Finalword
-    this.word = result.Word
-    this.dataLoaded = Promise.resolve(true)
-
-    return this.dataLoaded;
-  }
-
-  private checkGame(): void {
-    console.log('game', this.game)
-    if (!this.game) {
-      alert('Game data not found.')
-      this.router.navigate(['/gameList']);
-      return;
-    }
-
-    if (this.game.status == 2) {
-      alert('Game finished')
-      this.router.navigate(['/gameList']);
-      return;
-    }
   }
 }

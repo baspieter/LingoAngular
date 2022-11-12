@@ -1,13 +1,17 @@
 <div *ngIf="dataLoaded | async; then thenBlock else elseBlock"></div>
 <ng-template #thenBlock>
-  <div class="u-grid u-grid-cols-2 u-gap-x-24 u-mt-12">
-    <div class="u-col-span-1">
-      <app-word-form [game]="game" [word]="word" [gameWord]="gameWord" (onGuessWord)="submitWord($event)" (onNextRound)="nextRound($event)"></app-word-form>
-    </div>
-    <div class="u-col-span-1">
+  <div class="u-w-[75%] u-mx-auto">
+    <a routerLink="/gameList"  class="u-bg-white hover:u-bg-gray-100 u-text-gray-800 u-font-semibold u-text-xs u-py-0.5 u-px-2 u-border u-border-gray-300 u-rounded u-flex u-items-center" style="max-width: fit-content">
+      <mat-icon aria-label="Submit word" class="u-h-[50%] u-text-base">keyboard_backspace</mat-icon>
+      Spel overzicht
+    </a>
+    <div class="u-p-2 u-w-full u-bg-white u-rounded u-mb-4 u-mt-1 u-border u-border-gray-200">
+      <app-dashboard [game]="game" [finalWord]="finalWord"></app-dashboard>
       <app-final-word-form [game]="game" [finalWord]="finalWord" (onGuessFinalWord)="submitFinalWord($event)"></app-final-word-form>
     </div>
   </div>
+  <app-word-form [game]="game" [word]="word" [gameWord]="gameWord" (onGuessWord)="submitWord($event)" (onNextRound)="nextRound($event)"></app-word-form>
+  
 </ng-template>
 
 <ng-template class="lds-ring" #elseBlock>

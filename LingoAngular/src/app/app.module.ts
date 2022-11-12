@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import { MaterialModule } from './shared/modules/material/material.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +18,7 @@ import { AddWordComponent } from './components/content/add-word/add-word.compone
 import { AddFinalWordComponent } from './components/content/add-final-word/add-final-word.component';
 import { FinalWordFormComponent } from './components/game/final-word-form/final-word-form.component';
 import { WordFormComponent } from './components/game/word-form/word-form.component';
+import { DashboardComponent } from './components/game/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { WordFormComponent } from './components/game/word-form/word-form.compone
     AddWordComponent,
     AddFinalWordComponent,
     FinalWordFormComponent,
-    WordFormComponent
+    WordFormComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +41,7 @@ import { WordFormComponent } from './components/game/word-form/word-form.compone
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
+    MaterialModule,
     ToastrModule.forRoot()
   ],
   providers: [],

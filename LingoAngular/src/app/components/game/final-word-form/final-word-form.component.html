@@ -1,24 +1,12 @@
-<h1 class="u-pb-2">Final word</h1>
-<div class="u-flex u-items-center">
-  <div *ngFor="let item of finalWordProgress">
-    <div class="u-border u-bg-white u-text-xs u-py-1 u-px-3 u-mx-0.5">
-      {{item}}
-    </div>
-  </div>
-</div>
-
-<form (ngSubmit)="onSubmit()" class="u-pt-6">
-  <div class="u-flex u-items-center u-border-b u-border-gray-800 u-py-1">
-    <input
-      class="u-appearance-none u-bg-transparent u-border-none u-w-full u-text-gray-700 u-mr-3 u-py-1 u-px-1 u-leading-tight focus:u-outline-none u-text-xs"
-      type="guessedFinalWord"
-      name="guessedFinalWord"
-      [(ngModel)]="guessedFinalWord"
-      id="guessedFinalWord"
-      placeholder="Guess finalword"
-    />
-    <button class="u-bg-white u-text-gray-800 u-font-semibold u-text-xs u-py-1.5 u-px-4 border u-border-gray-400 u-rounded" type="submit">
-      Guess
-    </button>
-  </div>
+<form (ngSubmit)="onSubmit()" class="u-pt-1 u-flex u-items-center">
+  <input
+    class="u-w-[250px] u-h-6 u-shadow u-appearance-none u-border u-rounded u-py-3 u-px-3 u-text-gray-700 u-leading-tight u-focus:outline-none u-text-[12px] u-focus:shadow-outline"
+    type="guessedFinalWord"
+    name="guessedFinalWord"
+    [(ngModel)]="guessedFinalWord"
+    id="guessedFinalWord"
+  />
+  <button class="u-bg-white hover:u-bg-gray-100 u-text-gray-800 u-font-semibold u-text-[10px] u-py-0.5 u-px-2 u-border u-border-gray-300 u-rounded u-h-[26px] u-ml-1 u-flex u-items-center" type="submit">
+    Submit
+  </button>
 </form>
