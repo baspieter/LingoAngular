@@ -6,7 +6,8 @@ import { Word } from 'src/app/Word';
 import { FinalWord } from 'src/app/FinalWord';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Location } from '@angular/common'; 
+import { Location } from '@angular/common';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-game',
@@ -45,8 +46,6 @@ export class GameComponent implements OnInit {
   }
 
   public syncGame(action: String, params: any = {}) {
-    console.log('syncGame!')
-    console.log(action)
     new Promise((resolve, reject) => {
       if (!action) return;
 

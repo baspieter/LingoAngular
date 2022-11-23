@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { MaterialModule } from './shared/modules/material/material.module';
+import { CdTimerModule } from 'angular-cd-timer';
 
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
@@ -33,7 +34,7 @@ import { DashboardComponent } from './components/game/dashboard/dashboard.compon
     AddFinalWordComponent,
     FinalWordFormComponent,
     WordFormComponent,
-    DashboardComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +43,8 @@ import { DashboardComponent } from './components/game/dashboard/dashboard.compon
     FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    CdTimerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
