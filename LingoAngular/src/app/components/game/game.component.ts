@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from 'src/app/services/game.service';
+import { SharedGameService } from 'src/app/services/shared-dashboard.service';
 import { Game } from 'src/app/Game';
 import { GameWord } from 'src/app/GameWord';
 import { Word } from 'src/app/Word';
@@ -7,7 +8,6 @@ import { FinalWord } from 'src/app/FinalWord';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Location } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-game',
@@ -22,8 +22,9 @@ export class GameComponent implements OnInit {
   finalWord!: FinalWord
   word!: Word
   gameId: Number | undefined
+  dashboardData: Object | undefined
 
-  constructor(public gameService: GameService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService, private location: Location) {
+  constructor(public gameService: GameService, public sharedGameService: SharedGameService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService, private location: Location) {
     const idString = this.route.snapshot.paramMap.get('id');
     this.gameId = (idString == null) ? undefined : parseInt(idString);
    }
@@ -94,6 +95,8 @@ export class GameComponent implements OnInit {
         this.gameWord = result.Gameword
         this.finalWord = result.Finalword
         this.word = result.Word
+        console.log(result.Game.round )
+        this.sharedGameService.updateDashboard({ gameId: result.Game.id, round: (result.Game.round + 1), status: (result.Game.status + 1), finalWordProgress: result.Game.finalWordProgress })
         this.dataLoaded = Promise.resolve(true);
         this.location.replaceState(`/game/${this.game.id}`);
       }
