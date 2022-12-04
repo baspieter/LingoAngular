@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FinalWord } from 'src/app/FinalWord';
 import { Game } from 'src/app/Game';
+import { SharedGameService } from 'src/app/services/shared-dashboard.service';
 
 @Component({
   selector: 'app-final-word-form',
@@ -8,32 +9,34 @@ import { Game } from 'src/app/Game';
   styleUrls: ['./final-word-form.component.scss']
 })
 export class FinalWordFormComponent implements OnInit {
-  @Output() onGuessFinalWord: EventEmitter<{gameId: number, finalWordGuess: string}> = new EventEmitter();
-  finalWordProgress: any;
+  @Output() onGuessFinalWord: EventEmitter<{finalWordGuess: string}> = new EventEmitter();
   guessedFinalWord: string | undefined;
+  finalWordProgress!: Array<String>;
+  showFinalWordForm: Boolean = false;
 
-  constructor() { }
-
-  @Input() game: Game | undefined
-  @Input() finalWord: FinalWord | undefined
+  constructor(public sharedGameService: SharedGameService) { }
 
   ngOnInit(): void {
+    this.sharedGameService.dashboardData.subscribe(dashboardData => {;
+      this.finalWordProgress = dashboardData.finalWordProgress.split('');
+    });
 
+    this.sharedGameService.finalWordForm.subscribe(finalWordForm => {
+      this.showFinalWordForm = finalWordForm;
+      if (finalWordForm) {
+        document.getElementById('finalWordForm')?.classList.remove('u-hidden');
+      } else {
+        document.getElementById('finalWordForm')?.classList.add('u-hidden');
+      }
+    });
   }
 
   onSubmit() {
-    if (!this.game) {
-      alert('Something went wrong.')
-      return;
-    }
-
     if (!this.guessedFinalWord) {
       alert('Please add a name')
       return;
     }
-    if (this.game.id) {
-      this.onGuessFinalWord.emit({gameId: this.game.id, finalWordGuess: this.guessedFinalWord});
-      this.guessedFinalWord = '';
-    }
+    this.onGuessFinalWord.emit({finalWordGuess: this.guessedFinalWord});
+    this.guessedFinalWord = '';
   }
 }

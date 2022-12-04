@@ -1,4 +1,5 @@
 import { Component, Input, EventEmitter, Output, AfterViewInit } from '@angular/core';
+import { SharedGameService } from 'src/app/services/shared-dashboard.service';
 import { GameWord } from 'src/app/GameWord';
 import { Game } from 'src/app/Game';
 import { Word } from 'src/app/Word';
@@ -13,7 +14,6 @@ import { toastPayload } from 'src/app/ToastPayload';
 })
 export class WordFormComponent implements AfterViewInit {
   @Output() onGuessWord: EventEmitter<{ gameWordId: number, wordGuess: string }> = new EventEmitter();
-  @Output() onNextRound: EventEmitter<{ gameId: number }> = new EventEmitter();
   @Input() game!: Game
   @Input() gameWord!: GameWord
   @Input() word!: Word
@@ -27,7 +27,7 @@ export class WordFormComponent implements AfterViewInit {
   toast!: toastPayload;
   wordFormDisabled: string | boolean = false;
 
-  constructor(private cs: CommonService) {}
+  constructor(private cs: CommonService, public sharedGameService: SharedGameService) {}
 
   ngOnInit(): void {
     if (!this.game || !this.gameWord || !this.word) return;
@@ -60,12 +60,6 @@ export class WordFormComponent implements AfterViewInit {
 
   ngOnDestroy() {
     this.cs.clearToast();
-  }
-
-  nextRound() {
-    if (this.game && this.game?.id) {
-      this.onNextRound.emit({gameId: this.game.id});
-    }
   }
 
   onSubmit() {
@@ -246,7 +240,7 @@ export class WordFormComponent implements AfterViewInit {
   }
 
   private finishRound() {
-    document.getElementById('nextRoundBtn')?.classList.remove('u-hidden');
+    this.sharedGameService.updateNextRoundBtn(true);
     if (this.wordProgress[this.wordProgress.length - 1] == this.correctWord) {
       this.toast = {
         title: 'Yay, correct word!',

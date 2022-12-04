@@ -1,22 +1,29 @@
-<div class="u-flex u-items-center">
-  <h1>Game {{gameId}}</h1>
-  <div class="u-ml-2 u-px-2 u-border u-rounded-lg {{statusColor}} u-text-[11px] u-text-white">
-    {{gameStatus}}
-  </div>
-  <div class="u-ml-1 u-px-2 u-border u-rounded-lg u-bg-gray-500 u-text-[11px] u-text-white">
-    Round {{gameRound}}/10
-  </div>
-  <div class="u-ml-1 u-px-2 u-border u-rounded-lg u-bg-gray-500 u-text-[11px] u-text-white">
-    <cd-timer format="ms"></cd-timer>
-  </div>
-</div>
-<div class="u-pt-2">
-  <p class="u-text-xs u-pr-3 u-pb-1">Finalword</p>
+<div class="u-p-6 u-mr-12 u-w-full u-bg-white u-rounded u-border u-border-gray-200">
   <div class="u-flex u-items-center">
-    <div *ngFor="let item of finalWordProgress">
-      <div class="u-border u-bg-white u-text-xs u-py-1 u-px-3">
-        {{item}}
+    <h1 class="u-font-medium">Game {{gameId}}</h1>
+    <div class="u-px-3 u-ml-2 u-border u-rounded-lg {{statusColor}} u-text-[12px] u-text-white">
+      {{gameStatus}}
+    </div>
+  </div>
+  <div class="u-mb-6 u-mt-2">
+    <div class="u-flex u-items-center">
+      <div class="u-px-3 u-inline-block u-border u-rounded-lg u-bg-gray-500 u-text-[12px] u-text-white">
+        Round {{gameRound}}/10
+      </div>
+      <div class="u-px-3 u-inline-block u-ml-2 u-border u-rounded-lg u-bg-gray-500 u-text-[12px] u-text-white">
+        <cd-timer format="ms"></cd-timer>
       </div>
     </div>
   </div>
+  <div>
+    <button (click)="showFinalWordForm()" class="u-bg-white u-text-center hover:u-bg-gray-100 u-text-[14px] u-font-medium u-py-1.5 u-px-3 u-border u-border-gray-300 u-rounded u-w-full">
+      Guess finalword
+    </button>
+    <button (click)="nextRound()" [disabled]="!activeNextRoundBtn" [ngClass]="{'hover:u-bg-gray-700 hover:u-border-gray-800 u-bg-gray-800 u-border-gray-800': activeNextRoundBtn, 'u-bg-gray-400 u-border-gray-400': !activeNextRoundBtn}" class=" u-mt-3 form-element u-text-[14px] u-font-medium u-py-1.5 u-px-3 u-text-white u-w-full u-rounded">
+      Next round
+    </button>
+  </div>
 </div>
+
+
+

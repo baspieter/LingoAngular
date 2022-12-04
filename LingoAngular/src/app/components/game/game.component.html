@@ -1,17 +1,24 @@
-<div class="u-w-[75%] u-mx-auto">
-  <a routerLink="/gameList"  class="u-bg-white hover:u-bg-gray-100 u-text-gray-800 u-font-semibold u-text-xs u-py-0.5 u-px-2 u-border u-border-gray-300 u-rounded u-flex u-items-center" style="max-width: fit-content">
+<div class="u-w-[70%] u-mx-auto">
+  <a routerLink="/gameList"  class="u-bg-white hover:u-bg-gray-100 u-text-[13px] u-font-medium u-py-1 u-px-3 u-border u-border-gray-300 u-rounded u-flex u-items-center" style="max-width: fit-content">
     <mat-icon aria-label="Submit word" class="u-h-[50%] u-text-base">keyboard_backspace</mat-icon>
-    Spel overzicht
+    Games overview
   </a>
-  <div class="u-p-2 u-w-full u-bg-white u-rounded u-mb-4 u-mt-1 u-border u-border-gray-200">
-    <app-dashboard></app-dashboard>
-    <app-final-word-form [game]="game" [finalWord]="finalWord" (onGuessFinalWord)="submitFinalWord($event)"></app-final-word-form>
+  <div class="u-grid u-grid-cols-3 u-gap-y-[2rem]">
+    <div class="u-col-span-full u-p-6 u-w-full u-bg-white u-rounded u-mt-1 u-border u-border-gray-200">
+      <app-final-word-form (onGuessFinalWord)="submitFinalWord($event)"></app-final-word-form>
+    </div>
+
+    <div clas="u-col-span-1">
+      <app-dashboard (onNextRound)="nextRound($event)"></app-dashboard>
+    </div>
+    <div class="u-col-span-2 u-row-span-2 u-ml-[2rem]">
+      <div *ngIf="dataLoaded | async; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>
+        <app-word-form [game]="game" [word]="word" [gameWord]="gameWord" (onGuessWord)="submitWord($event)"></app-word-form>
+      </ng-template>
+    </div>
   </div>
 </div>
-<div *ngIf="dataLoaded | async; then thenBlock else elseBlock"></div>
-<ng-template #thenBlock>
-  <app-word-form [game]="game" [word]="word" [gameWord]="gameWord" (onGuessWord)="submitWord($event)" (onNextRound)="nextRound($event)"></app-word-form>
-</ng-template>
 
 <ng-template class="lds-ring" #elseBlock>
   <div class="loading-spinner-container">

@@ -1,10 +1,5 @@
-import { AfterContentInit, Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { SharedGameService } from 'src/app/services/shared-dashboard.service';
-import { Game } from 'src/app/Game';
-import { FinalWord } from 'src/app/FinalWord';
-import { Dashboard } from 'src/app/dashboard';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { RoundOffsets } from '@popperjs/core/lib/modifiers/computeStyles';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,6 +7,8 @@ import { RoundOffsets } from '@popperjs/core/lib/modifiers/computeStyles';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
+  @Output() onNextRound: EventEmitter<{ gameId: number }> = new EventEmitter();
+
   finalWordProgress!: Array<String>;
   gameStatuses: Array<string> = new Array("Active", "Paused", "Finished");
   statusColors: Array<string> = new Array("u-bg-green-600", "u-bg-orange-500", "u-bg-green-600")
@@ -19,6 +16,7 @@ export class DashboardComponent {
   statusColor: string = this.statusColors[0];
   gameRound: number = 0;
   gameId: number = 0;
+  activeNextRoundBtn: Boolean = false;
 
   constructor(public sharedGameService: SharedGameService) { }
   ngOnInit(): void {
@@ -29,5 +27,17 @@ export class DashboardComponent {
       this.statusColor = this.statusColors[dashboardData.status - 1];
       this.finalWordProgress = dashboardData.finalWordProgress.split('');
     });
+
+    this.sharedGameService.nextRoundBtn.subscribe(nextRoundBtn => this.activeNextRoundBtn = nextRoundBtn);
+  }
+
+  nextRound() {
+    if (this.gameId) {
+      this.onNextRound.emit({gameId: this.gameId});
+    }
+  }
+
+  showFinalWordForm() {
+    this.sharedGameService.updateFinalWordForm(true);
   }
 }

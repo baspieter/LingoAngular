@@ -34,11 +34,11 @@ export class GameComponent implements OnInit {
     this.syncGame(method);
   }
 
-  public submitFinalWord(result: {gameId: Number, finalWordGuess: String}) {
-    this.syncGame('submitFinalWord', { gameId: result.gameId, finalWord: result.finalWordGuess });
+  public submitFinalWord(result: { finalWordGuess: String }) {
+    this.syncGame('submitFinalWord', { gameId: this.gameId, finalWord: result.finalWordGuess });
   }
 
-  public submitWord(result: {gameWordId: Number, wordGuess: String}) {
+  public submitWord(result: { gameWordId: Number, wordGuess: String }) {
     this.syncGame('submitWord', { gameWordId: result.gameWordId, word: result.wordGuess });
   }
 
@@ -95,8 +95,9 @@ export class GameComponent implements OnInit {
         this.gameWord = result.Gameword
         this.finalWord = result.Finalword
         this.word = result.Word
-        console.log(result.Game.round )
-        this.sharedGameService.updateDashboard({ gameId: result.Game.id, round: (result.Game.round + 1), status: (result.Game.status + 1), finalWordProgress: result.Game.finalWordProgress })
+        const round = action == 'nextRound' ? (result.Game.round + 1) : result.Game.round;
+        this.sharedGameService.updateDashboard({ gameId: result.Game.id, round: round, status: (result.Game.status + 1), finalWordProgress: result.Game.finalWordProgress })
+        this.sharedGameService.updateNextRoundBtn(false);
         this.dataLoaded = Promise.resolve(true);
         this.location.replaceState(`/game/${this.game.id}`);
       }
