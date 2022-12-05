@@ -1,20 +1,21 @@
 <h1 class="u-text-center u-pb-2 u-font-medium">Finalword</h1>
 <div class="u-flex u-items-center u-justify-center">
   <div *ngFor="let item of finalWordProgress">
-    <div class="u-border u-bg-white u-text-[18px] u-py-2 u-px-4">
+    <div class="u-border u-bg-white u-text-[12px] lg:u-text-[18px] u-py-1 u-px-2 lg:u-py-2 lg:u-px-4">
       {{item}}
     </div>
   </div>
 </div>
-<form (ngSubmit)="onSubmit()" id="finalWordForm" class="u-pt-1 u-flex u-items-center">
+<form (ngSubmit)="onSubmit()" id="finalWordForm" class="u-pt-1 u-flex u-items-center u-justify-center u-mt-2">
   <input
-    class="u-w-[250px] u-h-6 u-shadow u-appearance-none u-border u-rounded u-py-3 u-px-3 u-text-gray-700 u-leading-tight u-focus:outline-none u-text-[12px] u-focus:shadow-outline"
+  class="u-w-[250px] lg:u-w-[350px] u-shadow u-appearance-none u-border u-rounded u-py-1 u-px-2 lg:u-py-2 lg:u-px-3 u-text-sm u-text-gray-700 u-leading-tight u-focus:outline-none u-focus:shadow-outline"
+  [disabled]="finalWordFormDisabled"
     type="guessedFinalWord"
     name="guessedFinalWord"
     [(ngModel)]="guessedFinalWord"
     id="guessedFinalWord"
   />
-  <button class="u-bg-white hover:u-bg-gray-100 u-text-gray-800 u-font-semibold u-text-[10px] u-py-0.5 u-px-2 u-border u-border-gray-300 u-rounded u-h-[26px] u-ml-1 u-flex u-items-center" type="submit">
-    Submit
+  <button [disabled]="finalWordFormDisabled" [ngClass]="{'hover:u-bg-gray-700 hover:u-border-gray-800 u-w-full u-bg-gray-800 u-border-gray-800': !finalWordFormDisabled, 'u-bg-gray-400 u-border-gray-400': finalWordFormDisabled}" class="form-element u-w-[27px] u-h-[27px] lg:u-w-[34px] lg:u-h-[34px] u-text-white u-rounded u-ml-1" type="submit">
+    <mat-icon aria-label="Submit word" class="u-text-sm u-pt-1 lg:u-pt-0 lg:u-text-lg">send</mat-icon>
   </button>
 </form>

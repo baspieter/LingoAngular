@@ -17,6 +17,7 @@ export class DashboardComponent {
   gameRound: number = 0;
   gameId: number = 0;
   activeNextRoundBtn: Boolean = false;
+  gameMessage: String = "<p class='u-text-xs'>Game results are shown here.</p>";
 
   constructor(public sharedGameService: SharedGameService) { }
   ngOnInit(): void {
@@ -28,16 +29,17 @@ export class DashboardComponent {
       this.finalWordProgress = dashboardData.finalWordProgress.split('');
     });
 
-    this.sharedGameService.nextRoundBtn.subscribe(nextRoundBtn => this.activeNextRoundBtn = nextRoundBtn);
+    this.sharedGameService.nextRoundBtn.subscribe(nextRoundBtn => {
+      this.activeNextRoundBtn = nextRoundBtn;
+      this.gameRound = this.gameRound - 1;
+    });
+
+    this.sharedGameService.gameMessage.subscribe((gameMessage) => this.gameMessage = gameMessage);
   }
 
   nextRound() {
     if (this.gameId) {
       this.onNextRound.emit({gameId: this.gameId});
     }
-  }
-
-  showFinalWordForm() {
-    this.sharedGameService.updateFinalWordForm(true);
   }
 }

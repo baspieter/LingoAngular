@@ -13,30 +13,24 @@ export class FinalWordFormComponent implements OnInit {
   guessedFinalWord: string | undefined;
   finalWordProgress!: Array<String>;
   showFinalWordForm: Boolean = false;
+  finalWordFormDisabled: string | boolean = false;
 
   constructor(public sharedGameService: SharedGameService) { }
 
   ngOnInit(): void {
     this.sharedGameService.dashboardData.subscribe(dashboardData => {;
       this.finalWordProgress = dashboardData.finalWordProgress.split('');
-    });
-
-    this.sharedGameService.finalWordForm.subscribe(finalWordForm => {
-      this.showFinalWordForm = finalWordForm;
-      if (finalWordForm) {
-        document.getElementById('finalWordForm')?.classList.remove('u-hidden');
-      } else {
-        document.getElementById('finalWordForm')?.classList.add('u-hidden');
-      }
+      this.finalWordFormDisabled = dashboardData.status == 3;
     });
   }
 
   onSubmit() {
     if (!this.guessedFinalWord) {
-      alert('Please add a name')
+      alert('Please enter a word')
       return;
     }
-    this.onGuessFinalWord.emit({finalWordGuess: this.guessedFinalWord});
+    const finalWordGuess = this.guessedFinalWord.toLowerCase();
+    this.onGuessFinalWord.emit({finalWordGuess: finalWordGuess});
     this.guessedFinalWord = '';
   }
 }

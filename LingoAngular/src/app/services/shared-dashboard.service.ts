@@ -13,8 +13,8 @@ export class SharedGameService {
   private _nextRoundBtn: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false)
   nextRoundBtn: Observable<Boolean> = this._nextRoundBtn.asObservable();
 
-  private _finalWordForm: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false)
-  finalWordForm: Observable<Boolean> = this._finalWordForm.asObservable();
+  private _gameMessage: BehaviorSubject<String> = new BehaviorSubject<String>("<p>Game results are shown here.</p>")
+  gameMessage: Observable<String> = this._gameMessage.asObservable();
 
   updateDashboard(data: { gameId: number, round: number, status: number, finalWordProgress: String }): void {
     this._dashboardData.next(data);
@@ -24,7 +24,7 @@ export class SharedGameService {
     this._nextRoundBtn.next(active);
   }
 
-  updateFinalWordForm(active: Boolean) {
-    this._finalWordForm.next(active);
+  updateGameMessage(message: String) {
+    this._gameMessage.next(message);
   }
 }

@@ -18,6 +18,7 @@ export class FinalWordComponent implements OnInit {
   }
 
   addFinalWord(finalWord: FinalWord) {
+    finalWord.name = finalWord.name.toLowerCase();
     this.finalWordService.addFinalWord(finalWord).subscribe((finalWord) => this.finalWords.push(finalWord));
 
     this.toastr.success('Finalword added');

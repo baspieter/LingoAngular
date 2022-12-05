@@ -5,7 +5,7 @@
       {{gameStatus}}
     </div>
   </div>
-  <div class="u-mb-6 u-mt-2">
+  <div class="u-mt-2 u-mb-4">
     <div class="u-flex u-items-center">
       <div class="u-px-3 u-inline-block u-border u-rounded-lg u-bg-gray-500 u-text-[12px] u-text-white">
         Round {{gameRound}}/10
@@ -14,16 +14,16 @@
         <cd-timer format="ms"></cd-timer>
       </div>
     </div>
+    <p class="u-mt-2 u-text-xs u-text-gray-400">How to win: guess the finalword correctly.</p>
+    <p class="u-mt-1 u-text-xs u-text-gray-400">Note: receive finalword hints by completing 5-letter (game) words.</p>
+  </div>
+  <div class="u-mb-4">
+    <h1 class="u-font-medium">Logbook</h1>
+    <p class="u-text-xs u-text-gray-400" [innerHTML]=gameMessage></p>
   </div>
   <div>
-    <button (click)="showFinalWordForm()" class="u-bg-white u-text-center hover:u-bg-gray-100 u-text-[14px] u-font-medium u-py-1.5 u-px-3 u-border u-border-gray-300 u-rounded u-w-full">
-      Guess finalword
-    </button>
-    <button (click)="nextRound()" [disabled]="!activeNextRoundBtn" [ngClass]="{'hover:u-bg-gray-700 hover:u-border-gray-800 u-bg-gray-800 u-border-gray-800': activeNextRoundBtn, 'u-bg-gray-400 u-border-gray-400': !activeNextRoundBtn}" class=" u-mt-3 form-element u-text-[14px] u-font-medium u-py-1.5 u-px-3 u-text-white u-w-full u-rounded">
+    <button (click)="nextRound()" [disabled]="!activeNextRoundBtn" [ngClass]="{'hover:u-bg-gray-700 hover:u-border-gray-800 u-bg-gray-800 u-border-gray-800': activeNextRoundBtn, 'u-bg-gray-400 u-border-gray-400': !activeNextRoundBtn}" class="form-element u-text-[14px] u-font-medium u-py-1.5 u-px-3 u-text-white u-w-full u-rounded">
       Next round
     </button>
   </div>
 </div>
-
-
-

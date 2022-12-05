@@ -23,6 +23,7 @@ export class GameComponent implements OnInit {
   word!: Word
   gameId: Number | undefined
   dashboardData: Object | undefined
+  defaultGameMessage: String = "<p'>Game results are shown here.</p>"
 
   constructor(public gameService: GameService, public sharedGameService: SharedGameService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService, private location: Location) {
     const idString = this.route.snapshot.paramMap.get('id');
@@ -47,6 +48,8 @@ export class GameComponent implements OnInit {
   }
 
   public syncGame(action: String, params: any = {}) {
+    if (action != 'submitFinalWord' || action != 'submitWord') this.sharedGameService.updateGameMessage(this.defaultGameMessage);
+
     new Promise((resolve, reject) => {
       if (!action) return;
 
@@ -59,17 +62,15 @@ export class GameComponent implements OnInit {
           }
           break; 
         } 
-        case 'createGame': { 
+        case 'createGame': {
           this.gameService.createGame().subscribe(result => {
             resolve(result);
           });
           break; 
         }
         case 'submitFinalWord': {
-          this.gameService.submitFinalWord(params.gameId, params.finalWord).subscribe(result => {
-            if (result.Game.status != 2) {
-              this.toastr.error('Wrong guess!');
-            } 
+          if (!this.gameId) return;
+          this.gameService.submitFinalWord(this.gameId, params.finalWord).subscribe(result => {
             resolve(result)
           });
           break;
@@ -95,10 +96,10 @@ export class GameComponent implements OnInit {
         this.gameWord = result.Gameword
         this.finalWord = result.Finalword
         this.word = result.Word
-        const round = action == 'nextRound' ? (result.Game.round + 1) : result.Game.round;
-        this.sharedGameService.updateDashboard({ gameId: result.Game.id, round: round, status: (result.Game.status + 1), finalWordProgress: result.Game.finalWordProgress })
+        this.sharedGameService.updateDashboard({ gameId: result.Game.id, round: result.Game.round + 1, status: (result.Game.status + 1), finalWordProgress: result.Game.finalWordProgress })
         this.sharedGameService.updateNextRoundBtn(false);
         this.dataLoaded = Promise.resolve(true);
+        this.gameId = this.game.id;
         this.location.replaceState(`/game/${this.game.id}`);
       }
       return this.dataLoaded;
@@ -110,10 +111,18 @@ export class GameComponent implements OnInit {
       }
 
       if (this.game.status == 2) {
-        alert('Game finished')
-        this.router.navigate(['/gameList']);
+        if (this.game.finalWordProgress == this.finalWord.name) {
+          this.sharedGameService.updateGameMessage("<p class='u-text-green-600'>Congrats, game successfull completed!</p>");
+        } else {
+          this.sharedGameService.updateGameMessage("<p class='u-text-red-700'>Oops, you ran out of rounds, game is finished.</p>");
+        }
+        this.sharedGameService.updateNextRoundBtn(false);
         return;
       }
+
+      if (this.game.status != 2 && action == 'submitFinalWord') {
+        this.sharedGameService.updateGameMessage("<p class='u-text-red-700'>Oops, wrong guess!</p>");
+      } 
     })
   }
 }

@@ -3,7 +3,6 @@ import { SharedGameService } from 'src/app/services/shared-dashboard.service';
 import { GameWord } from 'src/app/GameWord';
 import { Game } from 'src/app/Game';
 import { Word } from 'src/app/Word';
-import { IndividualConfig, ToastrService } from 'ngx-toastr';
 import { CommonService } from 'src/app/services/common.service';
 import { toastPayload } from 'src/app/ToastPayload';
 
@@ -19,6 +18,7 @@ export class WordFormComponent implements AfterViewInit {
   @Input() word!: Word
 
   gameFinished: Boolean = false;
+  roundFinished: Boolean = false;
   guessedWord: string | undefined;
   wordArray: Array<String> = new Array(5);
   letterArray: Array<Number> = new Array(6);
@@ -34,18 +34,20 @@ export class WordFormComponent implements AfterViewInit {
   
     this.correctWord = this.word.name;
     this.wordProgress = this.gameWord.wordProgress;
-    this.gameFinished = (this.gameWord?.finished || this.gameWord?.wordProgress.length == 5) ? true : false
-
-    if (this.gameFinished) {
-      this.wordFormDisabled = "true";
-    }
+    this.roundFinished = (this.gameWord?.finished || this.gameWord?.wordProgress.length == 5) ? true : false
+    this.gameFinished = this.game.status == 2;
   }
 
   ngAfterViewInit(): void {
+    if (this.gameFinished || this.roundFinished) this.wordFormDisabled = "true";
+
+    if (this.gameFinished) {
+      return;
+    }
 
     this.setProgress();
 
-    if (this.gameFinished) {
+    if (this.roundFinished) {
       this.finishRound();
       return;
     }
@@ -74,7 +76,7 @@ export class WordFormComponent implements AfterViewInit {
     }
 
     if (!this.guessedWord) {
-      alert('Please add a name')
+      alert('Please enter a name')
       return;
     }
 
@@ -84,7 +86,8 @@ export class WordFormComponent implements AfterViewInit {
     }
 
     if (this.gameWord?.id) {
-      this.onGuessWord.emit({gameWordId: this.gameWord.id, wordGuess: this.guessedWord});
+      const guessedWord = this.guessedWord.toLowerCase();
+      this.onGuessWord.emit({gameWordId: this.gameWord.id, wordGuess: guessedWord});
       this.guessedWord = '';
     }
   }
@@ -241,22 +244,13 @@ export class WordFormComponent implements AfterViewInit {
 
   private finishRound() {
     this.sharedGameService.updateNextRoundBtn(true);
+    let message = "<p class='u-text-gray-400'>Game results are shown here.</p>";
     if (this.wordProgress[this.wordProgress.length - 1] == this.correctWord) {
-      this.toast = {
-        title: 'Yay, correct word!',
-        message: `You guessed: ${this.correctWord}. Hit the continue button to start the next round.`,
-        type: 'success',
-        ic: { timeOut: 20000000, closeButton: true, } as IndividualConfig,
-      };
+      message = `<p class="u-text-green-600">Yay, correct word! You guessed <b>${this.correctWord}</b> right! Continue to next round.</p>`
     } else {
-      this.toast = {
-        title: 'Oops ran out of guesses! :(',
-        message: `The correct word is: ${this.correctWord}. Hit the continue button to start the next round.`,
-        type: 'error',
-        ic: { timeOut: 20000000, closeButton: true, } as IndividualConfig,
-      };
+      message = `<p class="u-text-red-700">Oops, ran out of guesses. The correct word is <b>${this.correctWord}</b></p>`;
     }
-    this.cs.showToast(this.toast);
+    this.sharedGameService.updateGameMessage(message);
   }
 
   private prefillFirstLetter() {
