@@ -3,4 +3,5 @@ export interface Dashboard {
   round: number;
   status: number;
   finalWordProgress: String;
+  timer: number;
 }

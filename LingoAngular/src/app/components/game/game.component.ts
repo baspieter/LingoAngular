@@ -24,6 +24,8 @@ export class GameComponent implements OnInit {
   gameId: Number | undefined
   dashboardData: Object | undefined
   defaultGameMessage: String = "<p'>Game results are shown here.</p>"
+  liveTimer: number = 0;
+  savedTimer: number = 0;
 
   constructor(public gameService: GameService, public sharedGameService: SharedGameService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService, private location: Location) {
     const idString = this.route.snapshot.paramMap.get('id');
@@ -31,7 +33,8 @@ export class GameComponent implements OnInit {
    }
 
   ngOnInit() {
-    const method = (this.gameId) ? 'getGame' : 'createGame'
+    const method = (this.gameId) ? 'getGame' : 'createGame';
+    this.setTimerVariables();
     this.syncGame(method);
   }
 
@@ -70,19 +73,19 @@ export class GameComponent implements OnInit {
         }
         case 'submitFinalWord': {
           if (!this.gameId) return;
-          this.gameService.submitFinalWord(this.gameId, params.finalWord).subscribe(result => {
+          this.gameService.submitFinalWord(this.gameId, params.finalWord, this.liveTimer).subscribe(result => {
             resolve(result)
           });
           break;
         }
         case 'submitWord': {
-          this.gameService.submitWord(params.gameWordId, params.word).subscribe(result => {
+          this.gameService.submitWord(params.gameWordId, params.word, this.liveTimer).subscribe(result => {
             resolve(result)
           });
           break;
         }
         case 'nextRound': {
-          this.gameService.nextRound(params.gameId).subscribe(result => {
+          this.gameService.nextRound(params.gameId, this.liveTimer).subscribe(result => {
             resolve(result)
           });
           break;
@@ -96,10 +99,12 @@ export class GameComponent implements OnInit {
         this.gameWord = result.Gameword
         this.finalWord = result.Finalword
         this.word = result.Word
-        this.sharedGameService.updateDashboard({ gameId: result.Game.id, round: result.Game.round + 1, status: (result.Game.status + 1), finalWordProgress: result.Game.finalWordProgress })
+        this.sharedGameService.updateDashboard({ gameId: result.Game.id, round: result.Game.round + 1, status: (result.Game.status + 1), finalWordProgress: result.Game.finalWordProgress, timer: this.game.timer })
         this.sharedGameService.updateNextRoundBtn(false);
-        this.dataLoaded = Promise.resolve(true);
+        if (action == 'getGame' || action == 'createGame') this.sharedGameService.updateSavedTimer(this.game.timer);
         this.gameId = this.game.id;
+        this.dataLoaded = Promise.resolve(true);
+        
         this.location.replaceState(`/game/${this.game.id}`);
       }
       return this.dataLoaded;
@@ -124,5 +129,10 @@ export class GameComponent implements OnInit {
         this.sharedGameService.updateGameMessage("<p class='u-text-red-700'>Oops, wrong guess!</p>");
       } 
     })
+  }
+
+  setTimerVariables() {
+    this.sharedGameService.liveTimer.subscribe(timer => this.liveTimer = timer );
+    this.sharedGameService.savedTimer.subscribe(timer => this.savedTimer = timer );
   }
 }

@@ -5,4 +5,5 @@ export interface Game {
   finalWordProgress: String;
   greenBalls: number;
   redBalls: number;
+  timer: number;
 }

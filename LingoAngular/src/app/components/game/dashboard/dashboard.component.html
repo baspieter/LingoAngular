@@ -1,29 +1,32 @@
-<div class="u-p-6 u-mr-12 u-w-full u-bg-white u-rounded u-border u-border-gray-200">
-  <div class="u-flex u-items-center">
-    <h1 class="u-font-medium">Game {{gameId}}</h1>
-    <div class="u-px-3 u-ml-2 u-border u-rounded-lg {{statusColor}} u-text-[12px] u-text-white">
-      {{gameStatus}}
-    </div>
-  </div>
-  <div class="u-mt-2 u-mb-4">
+<div *ngIf="dataLoaded | async; then thenBlock"></div>
+<ng-template #thenBlock>
+  <div class="u-p-6 u-mr-12 u-w-full u-bg-white u-rounded u-border u-border-gray-200">
     <div class="u-flex u-items-center">
-      <div class="u-px-3 u-inline-block u-border u-rounded-lg u-bg-gray-500 u-text-[12px] u-text-white">
-        Round {{gameRound}}/10
-      </div>
-      <div class="u-px-3 u-inline-block u-ml-2 u-border u-rounded-lg u-bg-gray-500 u-text-[12px] u-text-white">
-        <cd-timer format="ms"></cd-timer>
+      <h1 class="u-font-medium">Game {{gameId}}</h1>
+      <div class="u-px-3 u-ml-2 u-border u-rounded-lg {{statusColor}} u-text-[12px] u-text-white">
+        {{gameStatus}}
       </div>
     </div>
-    <p class="u-mt-2 u-text-xs u-text-gray-400">How to win: guess the finalword correctly.</p>
-    <p class="u-mt-1 u-text-xs u-text-gray-400">Note: receive finalword hints by completing 5-letter (game) words.</p>
+    <div class="u-mt-2 u-mb-4">
+      <div class="u-flex u-items-center">
+        <div class="u-px-3 u-inline-block u-border u-rounded-lg u-bg-gray-500 u-text-[12px] u-text-white">
+          Round {{gameRound}}/10
+        </div>
+        <div class="u-px-3 u-inline-block u-ml-2 u-border u-rounded-lg u-bg-gray-500 u-text-[12px] u-text-white">
+          <cd-timer #timer (onTick)="onTick($event)" format="ms"></cd-timer>
+        </div>
+      </div>
+      <p class="u-mt-2 u-text-xs u-text-gray-400">How to win: guess the finalword correctly.</p>
+      <p class="u-mt-1 u-text-xs u-text-gray-400">Note: receive finalword hints by completing 5-letter (game) words.</p>
+    </div>
+    <div class="u-mb-4">
+      <h1 class="u-font-medium">Logbook</h1>
+      <p class="u-text-xs u-text-gray-400" [innerHTML]=gameMessage></p>
+    </div>
+    <div>
+      <button (click)="nextRound()" [disabled]="!activeNextRoundBtn" [ngClass]="{'hover:u-bg-gray-700 hover:u-border-gray-800 u-bg-gray-800 u-border-gray-800': activeNextRoundBtn, 'u-bg-gray-400 u-border-gray-400': !activeNextRoundBtn}" class="form-element u-text-[14px] u-font-medium u-py-1.5 u-px-3 u-text-white u-w-full u-rounded">
+        Next round
+      </button>
+    </div>
   </div>
-  <div class="u-mb-4">
-    <h1 class="u-font-medium">Logbook</h1>
-    <p class="u-text-xs u-text-gray-400" [innerHTML]=gameMessage></p>
-  </div>
-  <div>
-    <button (click)="nextRound()" [disabled]="!activeNextRoundBtn" [ngClass]="{'hover:u-bg-gray-700 hover:u-border-gray-800 u-bg-gray-800 u-border-gray-800': activeNextRoundBtn, 'u-bg-gray-400 u-border-gray-400': !activeNextRoundBtn}" class="form-element u-text-[14px] u-font-medium u-py-1.5 u-px-3 u-text-white u-w-full u-rounded">
-      Next round
-    </button>
-  </div>
-</div>
+</ng-template>
