@@ -36,11 +36,10 @@ export class WordFormComponent implements AfterViewInit {
     this.wordProgress = this.gameWord.wordProgress;
     this.roundFinished = (this.gameWord?.finished || this.gameWord?.wordProgress.length == 5) ? true : false
     this.gameFinished = this.game.status == 2;
+    if (this.gameFinished || this.roundFinished) this.wordFormDisabled = "true";
   }
 
   ngAfterViewInit(): void {
-    if (this.gameFinished || this.roundFinished) this.wordFormDisabled = "true";
-
     if (this.gameFinished) {
       return;
     }

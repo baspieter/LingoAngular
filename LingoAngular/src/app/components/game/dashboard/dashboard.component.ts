@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Output, ViewChild } from '@
 import { CdTimerComponent, TimeInterface } from 'angular-cd-timer';
 import { SharedGameService } from 'src/app/services/shared-dashboard.service';
 import { GameService } from 'src/app/services/game.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,48 +13,54 @@ export class DashboardComponent {
   @Output() onNextRound: EventEmitter<{ gameId: number }> = new EventEmitter();
   @ViewChild( 'timer', { static: false } ) cdTimer!: CdTimerComponent;
 
-  dataLoaded: Promise<boolean> | undefined
+  dataLoaded!: Promise<boolean>
   finalWordProgress!: Array<String>;
   gameStatuses: Array<string> = new Array("Active", "Paused", "Finished");
   statusColors: Array<string> = new Array("u-bg-green-600", "u-bg-orange-500", "u-bg-green-600")
   gameStatus: string = this.gameStatuses[0];
   statusColor: string = this.statusColors[0];
   gameRound: number = 0;
-  gameId: any = undefined;
-  savedTimer: number = 0;
+  gameId!: number;
   activeNextRoundBtn: Boolean = false;
   gameMessage: String = "<p class='u-text-xs'>Game results are shown here.</p>";
-  testen: String = "12";
+
+  dashboardObserver!: Subscription;
+  timerObserver!: Subscription;
+  nextButtonObserver!: Subscription;
+  messageObserver!: Subscription;
 
   constructor(public gameService: GameService, public sharedGameService: SharedGameService, private cd: ChangeDetectorRef) { }
 
   ngAfterViewInit() {
+    this.timerObserver = this.sharedGameService.savedTimer.subscribe((time) => {
+      if (this.cdTimer) this.setTimer(time)
+    });
   }
 
-  ngOnInit(): void {
-    this.sharedGameService.dashboardData.subscribe(dashboardData => {
+  ngOnInit () {
+    this.dashboardObserver = this.sharedGameService.dashboardData.subscribe(dashboardData => {
       this.gameId = dashboardData.gameId;
       this.gameRound = dashboardData.round;
       this.gameStatus = this.gameStatuses[dashboardData.status - 1];
       this.statusColor = this.statusColors[dashboardData.status - 1];
       this.finalWordProgress = dashboardData.finalWordProgress.split('');
+      if (this.gameStatus == "Finished" && this.cdTimer) {
+        this.cdTimer.stop();
+      }
     });
 
-    this.sharedGameService.savedTimer.subscribe((timer) => {
-      this.savedTimer = timer;
-    });
-
-    this.sharedGameService.nextRoundBtn.subscribe(nextRoundBtn => {
+    this.nextButtonObserver = this.sharedGameService.nextRoundBtn.subscribe(nextRoundBtn => {
       this.activeNextRoundBtn = nextRoundBtn;
       this.gameRound = this.gameRound - 1;
     });
-    this.sharedGameService.gameMessage.subscribe((gameMessage) => this.gameMessage = gameMessage);
-    this.dataLoaded = Promise.resolve(true);
-
-    this.setTimer()
+    this.messageObserver = this.sharedGameService.gameMessage.subscribe((gameMessage) => this.gameMessage = gameMessage);
   }
 
   ngOnDestroy(): void {
+    this.dashboardObserver.unsubscribe();
+    this.timerObserver.unsubscribe();
+    this.nextButtonObserver.unsubscribe();
+    this.messageObserver.unsubscribe();
     this.gameService.updateTimer(this.gameId, this.cdTimer.get().tick_count).subscribe(data => {
     })
   }
@@ -64,21 +71,19 @@ export class DashboardComponent {
     }
   }
 
-  setTimer() {
-    this.cdTimer.startTime = this.savedTimer;
-    this.cdTimer.stop();
-    // console.log(this.gameId == undefined || time == undefined)
-    // if (this.gameId == undefined || time == undefined) return;
+  setTimer(time: number) {
+    if (this.gameStatus == "Finished") {
+      console.log('finished?')
+     
+      this.cdTimer.startTime = time;
+      this.cdTimer.start();
+      this.cdTimer.stop();
+      return;
+    }
 
-    // if (this.gameStatus == "Finished") {
-    //   console.log(time)
-    //   this.cdTimer.startTime = time;
-    //   this.cdTimer.stop();
-    //   return;
-    // }
 
-    // this.cdTimer.startTime = time; 
-    // this.cdTimer.start();
+    this.cdTimer.startTime = time;
+    this.cdTimer.start();
   }
 
   onTick(data: TimeInterface) {
