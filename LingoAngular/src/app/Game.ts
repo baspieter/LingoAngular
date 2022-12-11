@@ -3,7 +3,5 @@ export interface Game {
   round: number;
   status: number;
   finalWordProgress: String;
-  greenBalls: number;
-  redBalls: number;
   timer: number;
 }

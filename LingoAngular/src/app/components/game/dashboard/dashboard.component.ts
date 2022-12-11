@@ -73,8 +73,6 @@ export class DashboardComponent {
 
   setTimer(time: number) {
     if (this.gameStatus == "Finished") {
-      console.log('finished?')
-     
       this.cdTimer.startTime = time;
       this.cdTimer.start();
       this.cdTimer.stop();

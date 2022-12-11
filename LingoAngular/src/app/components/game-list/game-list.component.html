@@ -12,7 +12,13 @@
           <thead class="u-border-b u-bg-gray-800">
           <tr>
             <th scope="col" class="u-text-sm u-font-medium u-text-white u-px-6 u-py-4">
-              Game ID
+              Game
+            </th>
+            <th scope="col" class="u-text-sm u-font-medium u-text-white u-px-6 u-py-4">
+              Status
+            </th>
+            <th scope="col" class="u-text-sm u-font-medium u-text-white u-px-6 u-py-4">
+              Round
             </th>
             <th scope="col" class="u-text-sm u-font-medium u-text-white u-px-6 u-py-4">
               Actions
@@ -20,16 +26,24 @@
           </tr>
           </thead>
           <tbody>
-          <tr class="u-bg-white u-border-b" *ngFor="let game of games">
-            <td class="u-text-sm u-text-gray-900 u-font-light u-px-6 u-py-4 u-whitespace-nowrap">
-              {{game.id}}
-            </td>
-            <td class="u-text-sm u-text-gray-900 u-font-light u-px-6 u-py-4 u-whitespace-nowrap">
-              <a routerLink="/game/{{game.id}}" class="u-bg-white hover:u-bg-gray-100 u-text-gray-800 u-font-semibold u-text-xs u-py-1.5 u-px-4 border u-border-gray-400 u-rounded">
-                Continue
-              </a>
-            </td>
-          </tr>
+            <tr class="u-bg-white u-border-b district" *ngFor="let game of games">
+              <td class="u-text-sm u-text-gray-900 u-font-light u-px-6 u-py-4 u-whitespace-nowrap">
+                {{game.id}}
+              </td>
+              <td class="u-text-sm u-text-gray-900 u-font-light u-px-6 u-py-4 u-whitespace-nowrap">
+                <div class="u-px-3 u-ml-2 u-border u-rounded-lg {{statusColor(game)}} u-text-[12px] u-text-white">
+                  {{gameStatus(game)}}
+                </div>
+              </td>
+              <td class="u-text-sm u-text-gray-900 u-font-light u-px-6 u-py-4 u-whitespace-nowrap">
+                {{game.round}}
+              </td>
+              <td class="u-text-sm u-text-gray-900 u-font-light u-px-6 u-py-4 u-whitespace-nowrap">
+                <a routerLink="/game/{{game.id}}" class="u-bg-white hover:u-bg-gray-100 u-text-gray-800 u-font-semibold u-text-xs u-py-1.5 u-px-4 border u-border-gray-400 u-rounded">
+                  Continue
+                </a>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
