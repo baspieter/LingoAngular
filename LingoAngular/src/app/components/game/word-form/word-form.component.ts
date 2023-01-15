@@ -92,9 +92,6 @@ export class WordFormComponent implements AfterViewInit {
   }
 
   private setProgress() {
-    if (this.wordProgress.length == 0) {
-      
-    }
     for (let [index, word] of this.wordProgress.entries()) {
       // Set all green letters per word
       const wordStatus: Map<Number, Number> = this.setGreenLetters(word);

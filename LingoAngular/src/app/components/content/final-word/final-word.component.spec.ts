@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ToastrModule } from 'ngx-toastr';
 
 import { FinalWordComponent } from './final-word.component';
 
@@ -8,7 +9,8 @@ describe('FinalWordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FinalWordComponent ]
+      declarations: [ FinalWordComponent ],
+      imports: [ ToastrModule.forRoot() ]
     })
     .compileComponents();
 

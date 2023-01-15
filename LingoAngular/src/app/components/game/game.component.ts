@@ -52,7 +52,7 @@ export class GameComponent implements OnInit {
 
   public syncGame(action: String, params: any = {}) {
     if (action != 'submitFinalWord' || action != 'submitWord') this.sharedGameService.updateGameMessage(this.defaultGameMessage);
-
+    
     new Promise((resolve, reject) => {
       if (!action) return;
 
@@ -93,6 +93,7 @@ export class GameComponent implements OnInit {
       }
     }).then((result: any) => {
       if (!result.Game || !result.Gameword || !result.Finalword || !result.Word) {
+
         this.dataLoaded = Promise.resolve(false);
       } else {
         this.game = result.Game
@@ -104,7 +105,6 @@ export class GameComponent implements OnInit {
         if (action == 'getGame' || action == 'createGame') this.sharedGameService.updateSavedTimer(this.game.timer);
         this.gameId = this.game.id;
         this.dataLoaded = Promise.resolve(true);
-        
         this.location.replaceState(`/game/${this.game.id}`);
       }
       return this.dataLoaded;
@@ -127,7 +127,7 @@ export class GameComponent implements OnInit {
 
       if (this.game.status != 2 && action == 'submitFinalWord') {
         this.sharedGameService.updateGameMessage("<p class='u-text-red-700'>Oops, wrong guess!</p>");
-      } 
+      }
     })
   }
 

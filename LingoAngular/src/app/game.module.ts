@@ -9,13 +9,14 @@ import { CdTimerModule } from 'angular-cd-timer';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
-import { GameListComponent } from './components/game-list/game-list.component';
-import { GameModule } from './game.module';
-import { ContentModule } from './content.module';
+import { GameComponent } from './components/game/game.component';
+import { FinalWordFormComponent } from './components/game/final-word-form/final-word-form.component';
+import { WordFormComponent } from './components/game/word-form/word-form.component';
+import { DashboardComponent } from './components/game/dashboard/dashboard.component';
+import { AppModule } from './app.module';
 
 @NgModule({
-  imports: [
+    imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -25,19 +26,15 @@ import { ContentModule } from './content.module';
     ToastrModule.forRoot({
       positionClass :'toast-bottom-right'
     }),
-    CdTimerModule,
-    GameModule,
-    ContentModule
+    CdTimerModule
   ],
   declarations: [
-    AppComponent,
-    HeaderComponent,
-    GameListComponent
-  ],
-  exports: [
-    HeaderComponent
+    GameComponent,
+    FinalWordFormComponent,
+    DashboardComponent,
+    WordFormComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class GameModule { }

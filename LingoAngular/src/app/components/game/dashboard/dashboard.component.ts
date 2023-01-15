@@ -38,6 +38,7 @@ export class DashboardComponent {
   }
 
   ngOnInit () {
+    console.log('dashboard!')
     this.dashboardObserver = this.sharedGameService.dashboardData.subscribe(dashboardData => {
       this.gameId = dashboardData.gameId;
       this.gameRound = dashboardData.round;
@@ -57,12 +58,13 @@ export class DashboardComponent {
   }
 
   ngOnDestroy(): void {
+    if (this.gameId && this.cdTimer) {
+      this.gameService.updateTimer(this.gameId, this.cdTimer.get().tick_count).subscribe();
+    };
     this.dashboardObserver.unsubscribe();
     this.timerObserver.unsubscribe();
     this.nextButtonObserver.unsubscribe();
     this.messageObserver.unsubscribe();
-    this.gameService.updateTimer(this.gameId, this.cdTimer.get().tick_count).subscribe(data => {
-    })
   }
 
   nextRound() {

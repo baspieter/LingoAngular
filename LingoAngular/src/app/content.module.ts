@@ -9,10 +9,12 @@ import { CdTimerModule } from 'angular-cd-timer';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
-import { GameListComponent } from './components/game-list/game-list.component';
-import { GameModule } from './game.module';
-import { ContentModule } from './content.module';
+import { ContentComponent } from './components/content/content.component';
+import { WordComponent } from './components/content/word/word.component';
+import { FinalWordComponent } from './components/content/final-word/final-word.component';
+import { AddWordComponent } from './components/content/add-word/add-word.component';
+import { AddFinalWordComponent } from './components/content/add-final-word/add-final-word.component';
+import { AppModule } from './app.module';
 
 @NgModule({
   imports: [
@@ -23,21 +25,18 @@ import { ContentModule } from './content.module';
     BrowserAnimationsModule,
     MaterialModule,
     ToastrModule.forRoot({
-      positionClass :'toast-bottom-right'
+        positionClass :'toast-bottom-right'
     }),
-    CdTimerModule,
-    GameModule,
-    ContentModule
+    CdTimerModule
   ],
   declarations: [
-    AppComponent,
-    HeaderComponent,
-    GameListComponent
-  ],
-  exports: [
-    HeaderComponent
+    ContentComponent,
+    WordComponent,
+    FinalWordComponent,
+    AddWordComponent,
+    AddFinalWordComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class ContentModule { }

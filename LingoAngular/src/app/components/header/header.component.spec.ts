@@ -1,4 +1,7 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CdTimerModule } from 'angular-cd-timer';
+import { ToastrModule } from 'ngx-toastr';
 import { HeaderComponent } from './header.component';
 
 describe('HeaderComponent', () => {
@@ -7,7 +10,8 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ]
+      declarations: [ HeaderComponent ],
+      imports: [ ToastrModule.forRoot() ]
     })
     .compileComponents();
 

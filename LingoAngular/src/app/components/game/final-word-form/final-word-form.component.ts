@@ -1,6 +1,4 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { FinalWord } from 'src/app/FinalWord';
-import { Game } from 'src/app/Game';
 import { SharedGameService } from 'src/app/services/shared-dashboard.service';
 
 @Component({
