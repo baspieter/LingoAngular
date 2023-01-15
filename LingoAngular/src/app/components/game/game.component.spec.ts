@@ -48,8 +48,8 @@ describe('GameComponent', () => {
     gameFixture.detectChanges();
     expect(gameFixture.nativeElement.querySelector('a').textContent).toContain('Games overview'); // Works
     expect(gameFixture.nativeElement.querySelector('p').textContent).toContain('How to win: guess the finalword correctly.'); // Works
-    expect(gameFixture.nativeElement.querySelector('#wordheader').textContent).toContain('Game word.');
-}));
+    expect(gameFixture.nativeElement.querySelector('#wordheader').textContent).toContain('Game word.'); // Failed: Cannot read properties of null (reading 'textContent')
+  }));
 
   it('should create', () => {
     expect(gameComponent).toBeTruthy();
