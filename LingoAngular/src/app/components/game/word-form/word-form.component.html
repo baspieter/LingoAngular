@@ -1,5 +1,5 @@
 <div class="words u-border u-border-gray-200 u-py-6 u-bg-white u-rounded">
-  <h1 id="wordheader" class="u-font-medium u-text-center u-mb-2">Game word</h1>
+  <h1 id="gameWordTitle" class="u-font-medium u-text-center u-mb-2">Game word</h1>
   <ul id="words u-w-full">
     <li *ngFor="let a of wordArray; let wordIndex = index">
       <div id="word_{{wordIndex}}" class="u-flex u-justify-center u-items-center u-flex-1">
@@ -20,7 +20,7 @@
       maxlength="6"
     />
     <div class="u-ml-1">
-      <button [disabled]="wordFormDisabled" [ngClass]="{'hover:u-bg-gray-700 hover:u-border-gray-800 u-w-full u-bg-gray-800 u-border-gray-800': !wordFormDisabled, 'u-bg-gray-400 u-border-gray-400': wordFormDisabled}" class="form-element u-w-[38px] u-h-[38px] u-text-white u-rounded" type="submit">
+      <button [disabled]="wordFormDisabled" id="save" [ngClass]="{'hover:u-bg-gray-700 hover:u-border-gray-800 u-w-full u-bg-gray-800 u-border-gray-800': !wordFormDisabled, 'u-bg-gray-400 u-border-gray-400': wordFormDisabled}" class="form-element u-w-[38px] u-h-[38px] u-text-white u-rounded" type="submit">
         <mat-icon aria-label="Submit word" class="u-text-lg">send</mat-icon>
       </button>
     </div>

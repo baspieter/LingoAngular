@@ -38,7 +38,6 @@ export class DashboardComponent {
   }
 
   ngOnInit () {
-    console.log('dashboard!')
     this.dashboardObserver = this.sharedGameService.dashboardData.subscribe(dashboardData => {
       this.gameId = dashboardData.gameId;
       this.gameRound = dashboardData.round;
