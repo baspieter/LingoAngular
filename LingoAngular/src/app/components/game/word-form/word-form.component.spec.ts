@@ -16,7 +16,7 @@ describe('WordFormComponent', () => {
 
     fixture = TestBed.createComponent(WordFormComponent);
     component = fixture.componentInstance;
-    component.wordProgress = [];
+    component.wordEntries = [];
     component.correctWord = '';
     fixture.detectChanges();
   });

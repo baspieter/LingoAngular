@@ -28,7 +28,7 @@ describe('GameComponent', () => {
   let wordFormFixture: ComponentFixture<WordFormComponent>;
 
   let game: Game = { id: 1, round: 1, status: 1, finalWordProgress: 'kerst', timer: 30 };
-  let gameWord: GameWord = { id: 1, wordProgress: ['b'], finished: false };
+  let gameWord: GameWord = { id: 1, wordEntries: ['b'], finished: false };
   let word: Word = { name: 'bussen' };
   let finalWord: FinalWord = { name: 'kerstmisfeest' };
 

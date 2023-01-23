@@ -5,6 +5,7 @@ import { Game } from 'src/app/Game';
 import { Word } from 'src/app/Word';
 import { CommonService } from 'src/app/services/common.service';
 import { toastPayload } from 'src/app/ToastPayload';
+import { WordEntry } from 'src/app/WordEntry';
 
 @Component({
   selector: 'app-word-form',
@@ -22,7 +23,7 @@ export class WordFormComponent implements AfterViewInit {
   guessedWord: string | undefined;
   wordArray: Array<String> = new Array(5);
   letterArray: Array<Number> = new Array(6);
-  wordProgress!: Array<String>;
+  wordEntries!: Array<String>;
   correctWord!: String;
   toast!: toastPayload;
   wordFormDisabled: string | boolean = false;
@@ -33,8 +34,8 @@ export class WordFormComponent implements AfterViewInit {
     if (!this.game || !this.gameWord || !this.word) return;
   
     this.correctWord = this.word.name;
-    this.wordProgress = this.gameWord.wordProgress;
-    this.roundFinished = (this.gameWord?.finished || this.gameWord?.wordProgress.length == 5) ? true : false
+    this.wordEntries = this.setWordEntries(this.gameWord.wordEntries);
+    this.roundFinished = (this.gameWord?.finished || this.gameWord?.wordEntries.length == 5) ? true : false
     this.gameFinished = this.game.status == 2;
     if (this.gameFinished || this.roundFinished) this.wordFormDisabled = "true";
   }
@@ -54,7 +55,7 @@ export class WordFormComponent implements AfterViewInit {
     // Pre fill first letter.
     this.prefillFirstLetter();
     // Pre fill the next word element.
-    if (this.wordProgress.length < 5 && this.wordProgress.length > 0) this.prefillNextWord();
+    if (this.wordEntries.length < 5 && this.wordEntries.length > 0) this.prefillNextWord();
 
     document.getElementById('guessedWord')?.focus();
   }
@@ -92,7 +93,7 @@ export class WordFormComponent implements AfterViewInit {
   }
 
   private setProgress() {
-    for (let [index, word] of this.wordProgress.entries()) {
+    for (let [index, word] of this.wordEntries.entries()) {
       // Set all green letters per word
       const wordStatus: Map<Number, Number> = this.setGreenLetters(word);
       // Set all orange letters per word
@@ -108,10 +109,10 @@ export class WordFormComponent implements AfterViewInit {
   }
 
   private prefillNextWord() {
-    const nextWordElement = document.getElementById(`word_${this.wordProgress.length}`)
+    const nextWordElement = document.getElementById(`word_${this.wordEntries.length}`)
     if (!nextWordElement) return;
 
-    const bestguessedWord: String = this.setBestWordGuess(this.correctWord, this.wordProgress[this.wordProgress.length - 1]);
+    const bestguessedWord: String = this.setBestWordGuess(this.correctWord, this.wordEntries[this.wordEntries.length - 1]);
     const bestguessedWordMap: Map<Number, Number> = this.convertWordToMap(bestguessedWord)
     this.createNextWord(bestguessedWordMap, nextWordElement, bestguessedWord);
   }
@@ -120,7 +121,7 @@ export class WordFormComponent implements AfterViewInit {
     let bestWordCount: Number = 0;
     let bestWord: String = word;
 
-    for (let [index, word] of this.wordProgress.entries()) {
+    for (let [index, word] of this.wordEntries.entries()) {
       let correct_count = 0
 
       for (let i = 0; i < 6; i++) {
@@ -241,7 +242,7 @@ export class WordFormComponent implements AfterViewInit {
   private finishRound() {
     this.sharedGameService.updateNextRoundBtn(true);
     let message = "<p class='u-text-gray-400'>Game results are shown here.</p>";
-    if (this.wordProgress[this.wordProgress.length - 1] == this.correctWord) {
+    if (this.wordEntries[this.wordEntries.length - 1] == this.correctWord) {
       message = `<p class="u-text-green-600">Yay, correct word! You guessed <b>${this.correctWord}</b> right! Continue to next round.</p>`
     } else {
       message = `<p class="u-text-red-700">Oops, ran out of guesses. The correct word is <b>${this.correctWord}</b></p>`;
@@ -250,9 +251,18 @@ export class WordFormComponent implements AfterViewInit {
   }
 
   private prefillFirstLetter() {
-    const wordElement = document.getElementById(`word_${this.wordProgress.length}`)
+    const wordElement = document.getElementById(`word_${this.wordEntries.length}`)
     if (wordElement) {
       wordElement.children[0].children[0].innerHTML = this.correctWord[0];
     }
+  }
+
+  private setWordEntries(entries: Array<WordEntry>) {
+    const result: string[] = []
+    entries.forEach(entry => {
+      result.push(entry.name)
+    });
+
+    return result;
   }
 }

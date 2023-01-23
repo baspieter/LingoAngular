@@ -1,5 +1,7 @@
+import { WordEntry } from "./WordEntry";
+
 export interface GameWord {
   id?: number;
-  wordProgress: Array<String>;
+  wordEntries: Array<WordEntry>;
   finished: Boolean;
 }
