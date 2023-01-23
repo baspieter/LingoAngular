@@ -1,24 +1,12 @@
-<nav class="u-bg-gray-800 u-rounded-t">
+<nav class="u-bg-gray-800 lg:u-rounded-t">
   <div class="u-max-w-7xl u-mx-auto u-px-2 sm:u-px-6 lg:u-px-8">
     <div class="u-relative u-flex u-items-center u-justify-between u-h-16">
-      <div class="u-absolute u-inset-y-0 u-left-0 flex u-items-center sm:u-hidden">
-        <button type="button" class="u-inline-flex u-items-center u-justify-center u-p-2 u-rounded-md u-text-gray-400 hover:u-text-white hover:u-bg-gray-700 focus:u-outline-none focus:u-ring-2 focus:u-ring-inset focus:u-ring-white" aria-controls="mobile-menu" aria-expanded="false">
-          <span class="u-sr-only">Open main menu</span>
-          <svg class="u-block u-h-6 u-w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <svg class="u-hidden u-h-6 u-w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
       <div class="u-flex-1 u-flex u-items-center u-justify-center sm:u-items-stretch sm:u-justify-start">
         <div class="u-flex-shrink-0 u-flex u-items-center">
           <img class="u-block u-h-8 u-w-auto" src="assets/lingo-logo.png" alt="Workflow">
         </div>
         <div class="u-hidden sm:u-block sm:u-ml-6">
           <div class="u-flex u-space-x-4">
-            <a routerLink="/" [ngClass]="{'bg-gray-900 text-white': hasRoute('/')}" class="u-text-gray-300 hover:u-bg-gray-700 hover:u-text-white u-px-3 u-py-2 u-rounded-md u-text-sm u-font-medium">Play</a>
             <a routerLink="/gameList" [ngClass]="{'bg-gray-900 text-white': hasRoute('/gameList')}" class="u-text-gray-300 hover:u-bg-gray-700 hover:u-text-white u-px-3 u-py-2 u-rounded-md u-text-sm u-font-medium">Games</a>
             <a routerLink="/content" [ngClass]="{'bg-gray-900 text-white': hasRoute('/content')}" class="u-text-gray-300 hover:u-bg-gray-700 hover:u-text-white u-px-3 u-py-2 u-rounded-md u-text-sm u-font-medium">Content</a>
           </div>
@@ -27,11 +15,10 @@
     </div>
   </div>
 
-  <!-- <div class="sm:hidden" id="mobile-menu">
-    <div class="px-2 pt-2 pb-3 space-y-1">
-      <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Play</a>
-      <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Games</a>
-      <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Content</a>
+  <div class="u-block md:u-hidden" id="mobile-menu">
+    <div class="px-2 pt-2 pb-3 space-y-1 u-text-center">
+      <a routerLink="/gameList" [ngClass]="{'bg-gray-900 text-white': hasRoute('/gameList')}" class="u-text-gray-300 hover:u-bg-gray-700 hover:u-text-white u-px-3 u-py-2 u-rounded-md u-text-sm u-font-medium">Games</a>
+      <a routerLink="/content" [ngClass]="{'bg-gray-900 text-white': hasRoute('/content')}" class="u-text-gray-300 hover:u-bg-gray-700 hover:u-text-white u-px-3 u-py-2 u-rounded-md u-text-sm u-font-medium">Content</a>
     </div>
-  </div> -->
+  </div>
 </nav>
