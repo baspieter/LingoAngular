@@ -11,6 +11,7 @@ import { GameModule } from 'src/app/game.module';
 import { GameWord } from 'src/app/GameWord';
 import { GameService } from 'src/app/services/game.service';
 import { Word } from 'src/app/Word';
+import { WordEntry } from 'src/app/WordEntry';
 import { AddFinalWordComponent } from '../content/add-final-word/add-final-word.component';
 import { FinalWordComponent } from '../content/final-word/final-word.component';
 import { HeaderComponent } from '../header/header.component';
@@ -28,7 +29,8 @@ describe('GameComponent', () => {
   let wordFormFixture: ComponentFixture<WordFormComponent>;
 
   let game: Game = { id: 1, round: 1, status: 1, finalWordProgress: 'kerst', timer: 30 };
-  let gameWord: GameWord = { id: 1, wordEntries: ['b'], finished: false };
+  let wordEntry: WordEntry = { name: 'b' }
+  let gameWord: GameWord = { id: 1, wordEntries: [wordEntry], finished: false };
   let word: Word = { name: 'bussen' };
   let finalWord: FinalWord = { name: 'kerstmisfeest' };
 
