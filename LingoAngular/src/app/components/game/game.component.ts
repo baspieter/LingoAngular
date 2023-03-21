@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from 'src/app/services/game.service';
-import { SharedGameService } from 'src/app/services/shared-dashboard.service';
+import { SharedGameService } from 'src/app/services/shared-game.service';
 import { Game } from 'src/app/Game';
 import { GameWord } from 'src/app/GameWord';
 import { Word } from 'src/app/Word';

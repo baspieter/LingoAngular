@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SharedGameService } from './shared-dashboard.service';
+import { SharedGameService } from './shared-game.service';
 
 describe('SharedGameService', () => {
   let service: SharedGameService;

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { CdTimerComponent, TimeInterface } from 'angular-cd-timer';
-import { SharedGameService } from 'src/app/services/shared-dashboard.service';
+import { SharedGameService } from 'src/app/services/shared-game.service';
 import { GameService } from 'src/app/services/game.service';
 import { Subscription } from 'rxjs';
 

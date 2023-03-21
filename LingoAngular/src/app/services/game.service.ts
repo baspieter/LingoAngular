@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { SharedGameService } from 'src/app/services/shared-dashboard.service';
+import { SharedGameService } from 'src/app/services/shared-game.service';
 import { Observable } from 'rxjs';
 import { Game } from '../Game';
 import { Word } from '../Word';

@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter, Output, AfterViewInit } from '@angular/core';
-import { SharedGameService } from 'src/app/services/shared-dashboard.service';
+import { SharedGameService } from 'src/app/services/shared-game.service';
 import { GameWord } from 'src/app/GameWord';
 import { Game } from 'src/app/Game';
 import { Word } from 'src/app/Word';

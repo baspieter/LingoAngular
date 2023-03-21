@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { SharedGameService } from 'src/app/services/shared-dashboard.service';
+import { SharedGameService } from 'src/app/services/shared-game.service';
 
 @Component({
   selector: 'app-final-word-form',
